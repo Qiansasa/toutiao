@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/suxiang-zhibo.css" />
+	</head>
+	<body>
+		<div class="aui-content-padded">
+			<div class="sx-close" Tapmode onclick="_close();">
+				<img src="../../image/close_hei.png"  />
+			</div>
+			<div class="sx-add-title">
+				<input type="text" placeholder="标题有趣能吸引更多人气" value="" />
+				<i class="aui-iconfont aui-icon-question" tapmode onclick="_url({url:'about',id:'8',title:'直播规则'})"></i>
+			</div>
+			<div class="sx-add-tags" data-id="" data-title="" tapmode onclick="type()">
+				选择分类 <span class="aui-iconfont aui-icon-right"></span>
+			</div>
+			<div class="sx-add-img">
+				<h2>上传封面</h2>
+				<div class="sx-add-img-s aui-card-list-footer">
+					<div class="sx-add-img-l" tapmode onclick="img(1)">
+						<img src="" style="display: none" data-url="" />
+						<p>
+							横版封面
+						</p>
+					</div>
+					<div class="sx-add-img-r" tapmode onclick="img(2)">
+						<img src="" style="display: none" data-url="" />
+						<p>
+							竖版
+						</p>
+					</div>
+					<!--
+					<img class="sx-add-img-l" src="../../image/zhibosx-add-img-r.png" />
+					<img class="sx-add-img-r" src="../../image/zhibo/sx-add-img-r.png" />-->
+				</div>
+			</div>
+			<div class="sx-btn aui-btn aui-btn-block" tapmode onclick="url();">
+				开始直播
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			info();
+			api.parseTapmode();
+			_heibai(1);
+			$api.fixStatusBar($api.dom('.aui-content-padded'));
+		}
+		// 读取信息
+		function info(){
+			_loading();
+			_ajax('api/zhibo/info',function(ret,err){
+				if(ret){
+					console.log(JSON.stringify(ret));
+					if(ret.ret){
+						var ret = ret.ret;
+						$('input').val(ret.roomName);
+						var _this = $('.sx-add-img-l img');
+						_this.data('url',ret.img_l);
+						_this.attr('src',fx_cdn+ret.img_l);
+						_this.show();
+			 
+						
+						_this = $('.sx-add-img-r img');
+						_this.data('url',ret.img_r);
+						_this.attr('src',fx_cdn+ret.img_r);
+						_this.show();
+						
+						_this = $('.sx-add-tags');
+						_this.data('id',ret.type_id);
+						_this.data('title',ret.type_title);
+						_this.html(ret.type_title+'<span class="aui-iconfont aui-icon-right"></span>');
+					}
+				}else{
+					_alert(JSON.stringify(err))
+				}
+				_loadingCloes();
+			})
+		}
+		// 打开分类
+		function type(){
+			_url({url:'zhibo/type_add',title:'直播分类',bounces:1,fan:1,type_title:$('.sx-add-tags').data('title')})
+		}
+		function url() {
+			var input = $('input').val();
+			if (!input) {
+				return _msg('请输入直播标题');
+			}
+			if (input.length < 3) {
+				alert('不能少于3个字')
+				return
+			}
+			var type_id = $('.sx-add-tags').data('id');
+			if (!type_id) {
+				return _msg('选择分类')
+			}
+			var img_l = $('.sx-add-img-l img').css('display');
+			if (img_l == 'none') {
+				return _msg('请上传横版封面')
+			}
+			var img_r = $('.sx-add-img-r img').css('display');
+			if (img_r == 'none') {
+				return _msg('请上传竖版封面')
+			}
+			add();
+		}
+		function img(type) {
+				var sourceType = 'album'
+				api.getPicture({
+					sourceType : sourceType,
+					encodingType : 'jpg',
+					mediaValue : 'pic',
+					destinationType : 'url',
+					quality : 50,
+					targetWidth : 800,
+					targetHeight : 800,
+				}, function(ret, err) {
+					if (ret) {
+						if (ret.data) {
+							var _this = type == 2 ? $('.sx-add-img-r img') : $('.sx-add-img-l img');
+							console.log("type"+type+" ret:"+ret.data)
+							_this.data('url',"");
+							_this.attr('src',ret.data);
+							_this.show();
+							console.log(_this.data('url'))
+						}
+					}
+				});
+		 
+		}
+		function add(){
+			var img_l = $('.sx-add-img-l img').data('url');
+			if (!img_l) {
+				return imgAjax(1);
+			}
+			var img_r = $('.sx-add-img-r img').data('url');
+			if (!img_r) {
+				return imgAjax(2);
+			}
+			var data = {
+				roomName 	: 	$('input').val(),
+				type_id 	: 	$('.sx-add-tags').data('id'),
+				img_l 		: 	img_l,
+				img_r 		: 	img_r,
+			}
+	 		_loading();
+			// 提交
+			_ajax('api/zhibo/CreateRoom',function(ret,err){
+				if(ret){
+					console.log(JSON.stringify(ret));
+					if(ret.ret){
+						ret = ret.ret;
+						_zurl({roomId:ret.roomId,password:ret.anchorPwd,nickname:ret.creator,img_l:img_l,img_r:img_r})
+					}else{
+						_alert(ret.msg)
+					}
+				}else{
+					_alert(JSON.stringify(err))
+				}
+				_loadingCloes();
+			},data)
+		}
+		// 封装上次图片方法
+		function imgAjax(type){
+			var _this = type == 2 ? $('.sx-add-img-r img') : $('.sx-add-img-l img');
+			var image = _this.attr('src');
+			_loading()
+			api.ajax({
+			    url: fx_url + 'api/member/imagesUpload',
+			    method: 'post',
+			    data: {
+			    	values:{
+			    		token:_token,
+			    	},
+			        files: {
+			            image: image
+			        }
+			    },
+			}, function(ret, err) {
+			    if (ret) {
+			        if(ret.ret){
+			        	_this.data('url',ret.ret);
+			        	add();
+			        }else{
+			        	alert("上传失败"+ret.err)
+			        }
+			    } else {
+			        api.alert({ msg: JSON.stringify(err) });
+			    }
+			});
+		}
+	</script>
+</html>

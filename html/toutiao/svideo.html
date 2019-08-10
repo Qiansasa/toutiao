@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.min.css" />
+		<style>
+			body{
+				background: transparent  !important;
+			}
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+			}
+			.swiper-slide {
+				position: relative;
+				background: transparent  !important;
+				height: 100%;
+				width: 100%;
+			}
+			.swiper-slide img {
+				width: 100%;
+				height: 100%;
+			}
+			.swiper-pagination-bullet{
+				background: #fff;
+				opacity:1
+			}
+			.swiper-pagination-bullet-active{
+				background: #f00;
+			}
+			.body {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				 
+			}
+			.body-top{
+				padding: 0 0.75rem;
+			}
+			.body-top img{
+				width: 1rem;
+			}
+			.body-bottom{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				color: #fff;
+				width: 88%;
+				padding: 0 0.75rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-text{
+				font-size: 0.75rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-user {
+				font-size: 0.85rem;
+				display: flex;
+				line-height: 2.2rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-user div{
+				padding-right: 0.4rem;
+			}
+			.body-bottom-user img{
+				width: 2rem;
+				height: 2rem;
+				border-radius: 50%;
+				background: #fff;
+				padding: 0.05rem;
+			}
+			.body-bottom-user div:nth-child(3) .aui-btn{
+				padding: 0 0.6rem;
+			}
+			.body-bottom-ping{
+				background:rgba(0, 0, 0, 0.2);
+				border-radius: 3rem;
+				color: #fff;
+				height: 1.8rem;
+				line-height: 1.8rem;
+				padding-left: 0.85rem;
+				font-size: 0.65rem;
+				margin-bottom: 1rem;
+				position: relative;
+			}
+			.body-bottom-ping div{
+				position: absolute;
+				top: 0;
+				left: 0.75rem;
+				font-size: 0.65rem;
+				font-weight: bold;
+			}
+			.body-bottom-ping div img{
+				width: 0.85rem;
+				height: 0.85rem;
+				display: inline-block;
+				vertical-align:middle;
+				margin-right: 0.5rem;
+			}
+			.body-right{
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				color: #fff;
+				padding: 0.75rem;
+				padding-bottom: 0;
+				margin-bottom: 0.88rem;	
+			}
+			.body-right div {
+				padding: 0.5rem 0;
+			}
+			.body-right div img{
+				width: 1.4rem;
+			}
+			.body-right div p{
+				text-align: center;
+				color: #fff;
+				font-size: 0.6rem;
+				padding-top: 0.2rem;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="swiper-container">
+			 <script id="sx-list" type="text/x-dot-template">
+				<div class="swiper-slide" data-id='{{= sx.id }}' data-video='{{= sx.video }}'>
+					<img src="{{= sx.image.replace("300/h/450",api.winWidth+"/h/"+api.winHeight) }}" style="opacity:0;" />
+					<div class="body">
+						<div class="body-top aui-card-list-footer">
+							<div><img src="../image/close_bai.png" /></div>
+							<div><img style="width: 1.8rem;" src="../image/view_1s.png" /></div>
+						</div>
+						<div class="body-bottom">
+							<div class="body-bottom-text">
+								{{= sx.title }}
+							</div>
+							<div class="body-bottom-user">
+								<div><img src="../image/touxiang.png" /></div>
+								<div class="aui-ellipsis-1" style="width:auto">{{= sx.source }}</div>
+								<div>
+									<div class="aui-btn aui-btn-danger" id="guanzhu" data-id="1" Tapmode onclick="guanzhu()">关注</div>
+								</div>
+							</div>
+							<div class="body-bottom-ping">
+								<div><img src="../image/body-bottom-ping.png" />写评论...</div>
+							</div>
+						</div>
+						<div class="body-right">
+							<div><img src="../image/sx-xiaoshipin_genpai_s.png" /><p>跟拍</p></div>
+							<div><img src="../image/sx-xiaoshipin_zan.png" /><p>172</p></div>
+							<div><img src="../image/sx-xiaoshipin_ping.png" /><p>135</p></div>
+							<div><img src="../image/sx-xiaoshipin_fenxiang.png" /><p>分享</p></div>
+						</div>
+					</div>
+				</div>
+			</script> 
+			<div class="swiper-wrapper" id="sx-view"></div>
+			<div class="swiper-pagination"></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/doT.js"></script>
+	<script type="text/javascript" src="../script/swiper.min.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		 
+		var w = $(window).width();
+		var h = $(window).height();
+		var activeIndex = 5;
+		var mySwiper
+		var style_bottom , style_right,style_top;
+		var sx
+		apiready = function() {
+			sx = {"source":"知足常乐207755035","title":"笑死我了","click":1,"weitoutiao":0,"image":"http://img.1424445608.com/05d99d391d85712bddc674b92aa51f6f.jpg?imageView2/1/w/"+api.winWidth+"/h/"+api.winHeight+"/format/jpg","create_time":"12-30 16:33","url":"/index.php/a/2402.html","mychannel":4,"images":null,"zan":0,"video":"http://img.1424445608.com/ff76972c97be222655bbb84990178486.mp4","qiniu_video_type":0,"id":2402,"user":{"img":"http://img.1424445608.com/62da3c13f3eef2774e965aedbd60f72a.jpg?imageView2/1/w/100/h/100/format/jpg","username":"知足常乐207755035"},"uid":15730,"update_time":"1546158836","videodate":null,"pingNum":0,"content":"","description":""}
+			var evalData = doT.template($api.html($api.byId('sx-list')));
+			$api.html($api.byId('sx-view'), evalData());
+			// 隐藏状态栏
+			api.setFullScreen({
+				fullScreen : true
+			});
+			// 处理苹果X适配问题
+			// 头部
+			style_top = $api.dom('.body .body-top');
+			$api.fixStatusBar(style_top);
+			style_top = $api.cssVal(style_top,'padding-top');
+			$('.body .body-top').css('padding-top',style_top);
+			// 底部
+			style_bottom = $api.dom('.body .body-bottom');
+			$api.fixTabBar(style_bottom);
+			style_bottom = $api.cssVal(style_bottom,'padding-bottom');
+			$('.body .body-bottom').css('padding-bottom',style_bottom);
+			// 底部右侧
+			style_right = $api.dom('.body .body-right');
+			$api.fixTabBar(style_right);
+			style_right = $api.cssVal(style_right,'padding-bottom');
+			$('.body .body-right').css('padding-bottom',style_right);
+			// 适配处理结束
+			mySwiper = new Swiper('.swiper-container', {
+				pagination: {
+			        el: '.swiper-pagination',
+			        clickable: true,
+			      },
+				on : {
+					// 当碰触到slider时执行
+					touchStart : function(event) {
+						//console.log(event);
+					},
+					// 手指触碰Swiper并滑动（手指）时执行
+					touchMove : function(event) {
+						//	console.log(event);
+					//	console.log(this.activeIndex);
+					//	console.log($('.swiper-slide').length);
+					},
+					// 回调函数，触摸释放时执行
+					touchEnd : function(event) {
+						//	console.log(event);
+					},
+					// 回调函数，swiper从当前slide开始过渡到另一个slide时执行。
+					slideChangeTransitionStart : function() { 
+						//	console.log(this.activeIndex);
+					},
+					// 回调函数，swiper从一个slide过渡到另一个slide结束时执行。
+					slideChangeTransitionEnd : function() {
+						var _this = $('.swiper-slide-active');
+						console.log(_this.data('id'));
+						console.log(_this.data('video'));
+						if(this.activeIndex >= activeIndex){
+							// 添加新数据
+							addSlide();
+						}
+						// 判断是否超出数量
+						removeSlide();
+					},
+				},
+			});
+			ajaxData();
+		}
+		// 数据
+ 		function ajaxData(){
+ 			addSlide();
+ 			return;
+ 			_ajax('api/article/lists/mychannel/4',function(ret,err){
+ 				if(ret){
+ 					 
+ 					var evalData = doT.template($api.html($api.byId('fx-list')));
+ 				//	ret.data = ret.data.replace("/\?imageView2\/1\/w\/300\/h\/450\/format\/jpg/g"," ");
+ 				//	console.log(JSON.stringify(ret))
+					$api.html($api.byId('fx-view'), evalData(ret));
+					 
+ 				}
+ 			})
+ 		}
+		 
+		function html(data) {
+			var a = '';
+			a += '<div class="swiper-slide" data-id="'+data.id+'" data-video="'+data.video+'">';
+			a += '	<img src="'+data.image.replace("300/h/450",api.winWidth+"/h/"+api.winHeight)+'" />';
+			a += '	<div class="body">';
+			a += '		<div class="body-top aui-card-list-footer" style="padding-top: '+style_top+'">';
+			a += '			<div><img src="../image/close_bai.png" /></div>';
+			a += '			<div><img style="width: 2rem;" src="../image/view_1s.png" /></div>';
+			a += '		</div>';
+			a += '		<div class="body-bottom" style="padding-bottom: '+style_bottom+'">';
+			a += '			<div class="body-bottom-text">'+data.title+'</div>';
+			a += '			<div class="body-bottom-user">';
+			a += '				<div><img src="../image/touxiang.png" /></div>';
+			a += '				<div class="aui-ellipsis-1" style="width:auto">'+data.source+'</div>';
+			a += '				<div>';
+			a += '					<div class="aui-btn aui-btn-danger" id="guanzhu" data-id="1" Tapmode onclick="guanzhu()">关注</div>';
+			a += '				</div>';
+			a += '			</div>';
+			a += '			<div class="body-bottom-ping">';
+			a += '				<div><img src="../image/body-bottom-ping.png" />写评论...</div>';
+			a += '			</div>';
+			a += '		</div>';
+			a += '		<div class="body-right" style="padding-bottom: '+style_right+'">';
+			a += '			<div><img src="../image/sx-xiaoshipin_genpai_s.png" /><p>跟拍</p></div>';
+			a += '			<div><img src="../image/sx-xiaoshipin_zan.png" /><p>172</p></div>';
+			a += '			<div><img src="../image/sx-xiaoshipin_ping.png" /><p>135</p></div>';
+			a += '			<div><img src="../image/sx-xiaoshipin_fenxiang.png" /><p>分享</p></div>';
+			a += '		</div>';
+			a += '	</div>';
+			a += '</div>';
+			return a;
+		}
+		// 滑动最后增加数据
+		function addSlide(){
+			_loading();
+			_ajax('api/article/lists/mychannel/4',function(ret,err){
+ 				if(ret){
+ 					var data = ret.data;
+ 					for(var i = 0; i < data.length; i++){
+						if(data[i].mychannel != 99){
+							mySwiper.appendSlide(html(ret.data[i]));
+						}
+					}
+					activeIndex = activeIndex < 25 ? (activeIndex + 10) : 25;
+ 				}
+ 				_loadingCloes();
+ 			})
+			console.log(activeIndex);
+			//_msg('已添加5条新数据')
+		}
+		// 超过数量自动删除
+		function removeSlide(){
+			var lenData = 30;
+			var len = $('.swiper-slide').length;
+			if(len < lenData){
+				return;
+			}
+			len = len - lenData;
+			for(var i=0; i<len;i++){
+				mySwiper.removeSlide(0);
+			}
+		}
+	</script>
+</html>

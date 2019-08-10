@@ -1,0 +1,72 @@
+/*
+// +----------------------------------------------------------------------
+// | 南昌速翔网络科技有限公司 
+// +----------------------------------------------------------------------
+// | 新闻资讯APP系统 V1.0版
+// +----------------------------------------------------------------------
+// | QQ技术：1424445608   电话/微信：15622289461
+// +----------------------------------------------------------------------
+// | 请务必尊重知识产权 严格保证不恶意传播产品源码、不得直接对产品本身
+// | 进行二次转售或倒卖、不得对产品进行简单包装后声称为自己的产品等。
+// | 否则我们有权利收回产品，并根据事态轻重追究相应法律责任。
+// +----------------------------------------------------------------------
+// | Copyright (c) 2018-2019 http://www.suxiangw.com/ All rights reserved.
+// +----------------------------------------------------------------------
+*/
+
+.sx-s-1-username{
+	font-size: 0.85rem;
+	color: #000000;
+}
+.sx-s-1 .sx-s-1-text{
+	font-size: 0.65rem;
+	color: #888888
+}
+.sx-s-1 .aui-list .aui-list-item-media{
+	width: 4rem;
+}
+.sx-s-1 .aui-list,.sx-s-1 .aui-list .aui-list-item{
+	border: 0 !important;
+	background: none !important;
+}
+.sx-s-1 .aui-list .aui-list-item{
+	border-bottom: 1px solid #F7F7F7 !important;
+}
+.weidu{
+	position: absolute;
+	top: 0;
+	right: 0.5rem;
+}
+.weidu .aui-badge{
+	min-width: 1rem;
+	height: 1rem;
+	line-height:1rem;
+	font-size:0.6rem;
+	border-radius: 50%;
+}
+.aui-media-list .aui-list-item-inner{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+.aui-list .aui-list-item-text{
+	padding: 0.1rem 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

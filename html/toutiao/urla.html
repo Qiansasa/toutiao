@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/ffxiang.css" />
+		<link rel="stylesheet" type="text/css" href="../css/view.css" />
+		<style>
+			.footer {
+				position: relative;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				justify-content: center;
+           		align-items: center;
+           		text-align: center;
+			}
+			.time{
+				font-size: 18px;
+				color: #FF8000;
+				padding-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav fx-view-header " id="fx-header">
+			<a class="aui-pull-left aui-btn" tapmode onclick="c()"> <span class="aui-iconfont aui-icon-left"></span> </a>
+			<div class="aui-title">跳转浏览器</div>
+		</header>
+		<div class="footer">
+			<div>
+				<div class="aui-padded-b-15 aui-font-size-14">
+					<p>跳转第三方文章网址</p>
+					<p class="time">1秒</p>
+				</div>
+				<p class="aui-btn aui-btn-danger" tapmode onclick="a()">
+					启动浏览器
+				</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			_heibai(1)
+			var header = $api.byId('fx-header');
+			$api.fixStatusBar(header);
+			api.parseTapmode();
+			var f = $api.dom('.footer');
+			var a = $api.offset(f).h;
+			var h = api.winHeight - (a*2);
+			$api.css($api.dom('.footer'),"height: "+h+"px");
+			console.log(h+" : "+api.winHeight);
+			time();
+			 
+		}
+		function time(){
+			setTimeout(function(){
+				$api.text($api.dom('.time'),i+'秒');
+				a();
+			},1000) 
+		}
+		function a(){
+			$api.css($api.dom('.time'),'display: none');
+			api.openApp({
+				iosUrl : 'https://news.suxiangw.com/m/a/'+api.pageParam['id']+'.html',
+			});
+		}
+	</script>
+</html>

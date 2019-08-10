@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/suxiang-zhibo.css" />
+		<style>
+			body {
+				background: transparent !important;
+				background: #F1C40F !important;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="view_frm_msg">
+			<div class="view_frm_msgs">
+				<img class="a1" src="../../image/touxiang.png" />
+				<div class="a2">
+					<h2 class="aui-font-size-14 aui-ellipsis-1">速翔网络阿斯达阿斯达</h2>
+					<p class="aui-font-size-14 aui-ellipsis-1">来呗就是</p>
+				</div>
+				<img class="a3" src="../../image/zhibo/huojian.png" />
+			</div>
+		</div>
+	</body>
+ 	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+		}
+		function c() {
+			api.closeFrame();
+		}
+		// opacity : 0
+		function a(){
+			setTimeout(function(){
+				$('.view_frm_msg').animate({
+					top: '-2rem',
+					opacity : 0
+				}, 300,function(){
+					$(this).remove();
+				})
+			},2000)
+		}
+		a();
+ 
+	</script>
+</html>

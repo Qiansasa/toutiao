@@ -1,0 +1,739 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.min.css" />
+		<style>
+			body{
+				background: transparent  !important;
+			}
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+			}
+			.swiper-slide {
+				position: relative;
+				background: transparent  !important;
+				height: 100%;
+				width: 100%;
+			}
+			.swiper-slide img {
+				width: 100%;
+				height: 100%;
+			}
+			.swiper-pagination-bullet{
+				background: #fff;
+				opacity:1
+			}
+			.swiper-pagination-bullet-active{
+				background: #f00;
+			}
+			.body {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%; 
+			}
+			.body-top{
+				padding: 0 0.75rem;
+				background: -webkit-linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0));
+				background: -moz-linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0));
+				background: -o-linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0));
+				background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0,0,0,0.3)), to(rgba(0,0,0,0)));
+				background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0));
+				padding-bottom: 0.5rem;
+			}
+			.body-top div{
+				padding-top: 0.5rem;
+			}
+			.body-top img{
+				width: 1rem;
+			}
+			.body-bottom{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				color: #fff;
+				width: 88%;
+				padding: 0 0.75rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-text{
+				font-size: 0.75rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-user {
+				font-size: 0.85rem;
+				display: flex;
+				line-height: 2.2rem;
+				margin-bottom: 0.5rem;
+			}
+			.body-bottom-user div{
+				padding-right: 0.4rem;
+			}
+			.body-bottom-user img{
+				width: 2rem;
+				height: 2rem;
+				border-radius: 50%;
+				background: #fff;
+				padding: 0.05rem;
+			}
+			.body-bottom-user div:nth-child(3) .aui-btn{
+				padding: 0 0.6rem;
+			}
+			.body-bottom-ping{
+				background:rgba(0, 0, 0, 0.2);
+				border-radius: 3rem;
+				color: #fff;
+				height: 1.8rem;
+				line-height: 1.8rem;
+				padding-left: 0.85rem;
+				font-size: 0.65rem;
+				margin-bottom: 1rem;
+				position: relative;
+			}
+			.body-bottom-ping div{
+				position: absolute;
+				top: 0;
+				left: 0.75rem;
+				font-size: 0.65rem;
+				font-weight: bold;
+			}
+			.body-bottom-ping div img{
+				width: 0.85rem;
+				height: 0.85rem;
+				display: inline-block;
+				vertical-align:middle;
+				margin-right: 0.5rem;
+			}
+			.body-right{
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				color: #fff;
+				padding: 0.75rem;
+				padding-bottom: 0;
+				margin-bottom: 0.88rem;	
+			}
+			.body-right div {
+				padding: 0.5rem 0;
+			}
+			.body-right div img{
+				width: 1.4rem;
+			}
+			.body-right div p{
+				text-align: center;
+				color: #fff;
+				font-size: 0.6rem;
+				padding-top: 0.2rem;
+				font-weight: bold;
+			}
+			.aui-btn{
+				color: #333;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="swiper-container">
+			 <script id="sx-list" type="text/x-dot-template">
+				<div class="swiper-slide" style="width:{{=api.winWidth}}px;height:{{= api.winHeight}}px;  " data-id='{{= sx.id }}' data-video='{{= sx.video }}' data-data='{{= JSON.stringify(sx)}}'>
+					<img id="sltu" src="{{= sx.image.replace("300/h/450",api.winWidth+"/h/"+api.winHeight) }}" style="opacity:0;" />
+					<div class="body">
+						<div class="body-top aui-card-list-footer">
+							<div Tapmode onclick="guanbi()"><img src="../image/close_bai.png" /></div>
+							<div Tapmode onclick="fenxiang()"><img style="width: 1.8rem;" src="../image/view_1s.png" /></div>
+						</div>
+						<div class="body-bottom">
+							<div class="body-bottom-text">
+								{{= sx.title }}
+							</div>
+							{{? sx.uid}}
+							<div class="body-bottom-user" {{= $api.getStorage('app') ? 'style="display: none"' : ''}}>
+								<div Tapmode onclick="_url({id:{{= sx.uid }}},'u_win')"><img src="../image/touxiang.png" id="ffxiangImgCache" ffxiang-src="{{= sx.user.img }}"  src="../image/touxiang.png" /></div>
+								<div class="aui-ellipsis-1" style="width:auto">{{= sx.user.username }}</div>
+								<div>
+									<div class="aui-btn aui-btn-danger" id="guanzhu" data-id="1" Tapmode onclick="guanzhu()">关注</div>
+								</div>
+							</div>
+							{{?}}
+							<div class="body-bottom-ping" tapmode onclick="pingAdd()">
+								<div><img src="../image/body-bottom-ping.png" />写评论...</div>
+							</div>
+						</div>
+						<div class="body-right">
+							<div Tapmode onclick="_svideo()"><img src="../image/sx-xiaoshipin_genpai_s.png" /><p>跟拍</p></div>
+							<div Tapmode data-id='0' class="pingZan" onclick="pingZan()"><img src="../image/sx-xiaoshipin_zan.png" /><p>{{= sx.zan }}</p></div>
+							<div Tapmode onclick="ping()"><img src="../image/sx-xiaoshipin_ping.png" /><p id="sx-huifuNum">{{= sx.pingNum }}</p></div>
+							<div Tapmode onclick="fenxiang()"><img src="../image/sx-xiaoshipin_fenxiang.png" /><p>分享</p></div>
+						</div>
+					</div>
+				</div>
+			</script> 
+			<div class="swiper-wrapper" id="sx-view"></div>
+	 
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/doT.js"></script>
+	<script type="text/javascript" src="../script/swiper.min.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		 
+		var w = $(window).width();
+		var h = $(window).height();
+		var activeIndex = 5;
+		var mySwiper
+		var style_bottom , style_right,style_top;
+		var aid,xiaoshipin_ping_win=0,sx,inputField,pingAddPen = 1,pingIds=0,win_index;	// 1已打开  0未打开  ,
+		var page = 1;
+		apiready = function() {
+	 
+		//	console.log(JSON.stringify(api.pageParam));
+			win_index=api.pageParam['win_index'];
+			// 向上轻扫
+			api.addEventListener({
+			    name:'swipeup'
+			}, function(ret, err){  
+				console.log(' 向上轻扫'+xiaoshipin_ping_win)         
+			   if(xiaoshipin_ping_win==0){
+			   		ping()
+			   }
+			});
+			// 向下轻扫
+			api.addEventListener({
+			    name:'swipedown'
+			}, function(ret, err){    
+				console.log(' 向下轻扫'+xiaoshipin_ping_win)
+				guanbi()
+			});
+			sx=api.pageParam;
+			 
+			if(!sx){
+				alert("已被删除")
+				guanbi()
+			}
+			var evalData = doT.template($api.html($api.byId('sx-list')));
+			$api.html($api.byId('sx-view'), evalData());
+			api.parseTapmode();
+	 
+			// 处理苹果X适配问题
+			// 头部
+			style_top = $api.dom('.body .body-top');
+			$api.fixStatusBar(style_top);
+			style_top = $api.cssVal(style_top,'padding-top');
+			$('.body .body-top').css('padding-top',style_top);
+			// 底部
+			style_bottom = $api.dom('.body .body-bottom');
+			$api.fixTabBar(style_bottom);
+			style_bottom = $api.cssVal(style_bottom,'padding-bottom');
+			$('.body .body-bottom').css('padding-bottom',style_bottom);
+			// 底部右侧
+			style_right = $api.dom('.body .body-right');
+			$api.fixTabBar(style_right);
+			style_right = $api.cssVal(style_right,'padding-bottom');
+			$('.body .body-right').css('padding-bottom',style_right);
+			// 适配处理结束
+			mySwiper = new Swiper('.swiper-container', {
+			 
+				on : {
+					// 当碰触到slider时执行
+					touchStart : function(event) {
+						//console.log(event);
+					},
+					// 手指触碰Swiper并滑动（手指）时执行
+					touchMove : function(event) {
+						//	console.log(event);
+					//	console.log(this.activeIndex);
+					//	console.log($('.swiper-slide').length);
+					},
+					// 回调函数，触摸释放时执行
+					touchEnd : function(event) {
+						//	console.log(event);
+					},
+					// 回调函数，swiper从当前slide开始过渡到另一个slide时执行。
+					slideChangeTransitionStart : function() { 
+						//	console.log(this.activeIndex);
+					},
+					// 回调函数，swiper从一个slide过渡到另一个slide结束时执行。
+					slideChangeTransitionEnd : function() {
+//						console.log(_this.data('id'));
+//						console.log(_this.data('video'));
+						 
+						//console.log(this.activeIndex+":"+activeIndex)
+						if(this.activeIndex >= activeIndex){
+						//	console.log('加载新数据')
+							// 添加新数据
+							addSlide();
+						}
+						// 判断是否超出数量
+						removeSlide();
+						var a_this = $('.swiper-slide-active');
+
+						// 更新sx数据
+						sx = a_this.data('data');
+						guanzhuzan();
+					//	console.log(JSON.stringify(sx));
+						
+						videoUrl(a_this.data('video'));
+						 
+					},
+				},
+			});
+			// 图片缓存本地
+			_imageCache();
+			guanzhuzan()
+			// 屏幕离开
+			api.addEventListener({
+				name : 'viewdisappear'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+				// 屏幕离开暂停播放
+				if(api.pageParam['root']){
+					api.execScript({
+						name : 'root',
+						frameName : 'frame_0',
+						script : 'pause()'
+					});
+				}else{
+					api.execScript({
+						name : 'xiaoshipin_win',
+						frameName : 'xiaoshipin_'+win_index,
+						script : 'pause()'
+					});
+				}
+				 
+			});
+			// 回到屏幕
+			api.addEventListener({
+				name : 'viewappear'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : true
+				});
+				// 进入屏幕开始播放
+				if(api.pageParam['root']){
+					api.execScript({
+						name : 'root',
+						frameName : 'frame_0',
+						script : 'start()'
+					});
+				}else{
+					api.execScript({
+						name : 'xiaoshipin_win',
+						frameName : 'xiaoshipin_'+win_index,
+						script : 'start()'
+					});
+				}
+				 
+			});
+			// 输入框模块
+			inputField = api.require('inputField');
+			inputField.setInputFieldListener(function(ret, err) {
+				if (ret) {
+					//_msg(JSON.stringify(ret))
+					if (ret.eventType == 'move') {
+						if (ret.chatViewH == 0 || ret.chatViewH == -1) {
+							pingHide()
+							inputField.resignFirstResponder();
+						}
+					}
+				} else {
+					_msgz(JSON.stringify(err));
+				}
+			}); 
+			ajaxData();
+		}
+		// 数据
+ 		function ajaxData(){
+ 			addSlide();
+ 		}
+	 
+		function html(data) {
+			var a = '';
+			a += '<div class="swiper-slide" style="width:'+api.winWidth+'px;height:'+api.winHeight+'px; data-id="'+data.id+'" data-video="'+data.video+'" data-data=\''+JSON.stringify(data)+'\'>';
+			a += '	<img id="sltu" src="'+data.image.replace("300/h/450",api.winWidth+"/h/"+api.winHeight)+'" />';
+			a += '	<div class="body">';
+			a += '		<div class="body-top aui-card-list-footer" style="padding-top: '+style_top+'">';
+			a += '			<div Tapmode onclick="guanbi()"><img src="../image/close_bai.png" /></div>';
+			a += '			<div Tapmode onclick="fenxiang()"><img style="width: 2rem;" src="../image/view_1s.png" /></div>';
+			a += '		</div>';
+			a += '		<div class="body-bottom" style="padding-bottom: '+style_bottom+'">';
+			a += '			<div class="body-bottom-text">'+data.title+'</div>';
+			if(data.uid){
+			a += '			<div class="body-bottom-user" '+($api.getStorage('app') ? 'style="display: none"' : '')+'>';
+			a += '				<div Tapmode onclick="_url({id:'+data.uid+'},\'u_win\')"><img src="../image/touxiang.png" id="ffxiangImgCache" ffxiang-src="'+data.user.img+'"  src="../image/touxiang.png" /></div>';
+			a += '				<div class="aui-ellipsis-1" style="width:auto">'+data.source+'</div>';
+			a += '				<div>';
+			a += '					<div class="aui-btn aui-btn-danger" id="guanzhu" data-id="1" Tapmode onclick="guanzhu()">关注</div>';
+			a += '				</div>';
+			a += '			</div>';
+			}
+			a += '			<div class="body-bottom-ping" tapmode onclick="pingAdd()">';
+			a += '				<div><img src="../image/body-bottom-ping.png" />写评论...</div>';
+			a += '			</div>';
+			a += '		</div>';
+			a += '		<div class="body-right" style="padding-bottom: '+style_right+'">';
+			a += '			<div Tapmode onclick="_svideo()"><img src="../image/sx-xiaoshipin_genpai_s.png" /><p>跟拍</p></div>';
+			a += '			<div Tapmode data-id="0" class="pingZan" onclick="pingZan()"><img src="../image/sx-xiaoshipin_zan.png" /><p>'+data.zan+'</p></div>';
+			a += '			<div Tapmode onclick="ping()"><img src="../image/sx-xiaoshipin_ping.png" /><p>'+data.pingNum+'</p></div>';
+			a += '			<div Tapmode onclick="fenxiang()"><img src="../image/sx-xiaoshipin_fenxiang.png" /><p>分享</p></div>';
+			a += '		</div>';
+			a += '	</div>';
+			a += '</div>';
+			return a;
+		}
+		// 滑动最后增加数据
+		function addSlide(){
+			//_loading();
+		//	console.log('api/article/lists/mychannel/4/ids/'+sx.id+'/?page='+page);
+			_ajax('api/article/lists/mychannel/4/ids/'+sx.id+'/?page='+page,function(ret,err){
+ 				if(ret){
+ 					var data = ret.data;
+ 					for(var i = 0; i < data.length; i++){
+						if(data[i].mychannel != 99){
+							mySwiper.appendSlide(html(ret.data[i]));
+						}
+					}
+					var len = $('.swiper-slide').length;
+					if(len > 15){
+						activeIndex = activeIndex < 25 ? (activeIndex + 10) : 25;
+					}
+					api.parseTapmode();
+					page ++;
+ 				}
+ 				//_loadingCloes();
+ 			})
+			//console.log(activeIndex);
+			//_msg('已添加5条新数据')
+		}
+		// 超过数量自动删除
+		function removeSlide(){
+			var lenData = 30;
+			var len = $('.swiper-slide').length;
+			if(len < lenData){
+				return;
+			}
+			len = len - lenData;
+			for(var i=0; i<len;i++){
+				mySwiper.removeSlide(0);
+			}
+		}
+		// 获取用户是否赞和关注
+		function guanzhuzan(){
+			if(!$api.getStorage('user')){
+				return;
+			}
+			console.log(sx.user.username +"   "+ sx.id)
+			_ajax('api/member/guanzhuzan',function(ret,err){
+				if(ret){
+					if(ret.zan){
+						var a=$('.swiper-slide-active .pingZan')
+					//	sx = $('#id'+id).data('data');
+						a.addClass('pingZanColor');
+						a.data('id', '1');
+						//$('.pingZan img').attr('src','../image/sx-xiaoshipin_zans.png');
+						a.html("<img src=\"../image/sx-xiaoshipin_zans.png\" />\r\n<p> "+(sx.zan ? sx.zan : sx.zan+1)+"</p>");
+					}
+					if(ret.guanzhu){
+						var guanzhuId=$('#guanzhu');
+						guanzhuId.removeClass("aui-btn-danger");
+						guanzhuId.html("已关注");
+						guanzhuId.data('id',"2");
+					}
+				}
+				console.log(JSON.stringify(ret)+JSON.stringify(err))
+			},{aid:sx.id,gz_uid:sx.uid})
+		}
+		function guanbi() {
+			if(xiaoshipin_ping_win == 1){
+				// 关闭评论
+				if(api.pageParam['root']){
+					api.execScript({
+						name : 'root',
+						frameName : 'xiaoshipin_ping_win',
+						script : 'g();'
+					}); 
+				}else{
+					api.execScript({
+						name : 'xiaoshipin_win',
+						frameName : 'xiaoshipin_ping_win',
+						script : 'g()'
+					});
+				}
+				return;
+			}
+			// 关闭输入框
+			if(pingAddPen==2){
+				inputField.close();
+			}
+			console.log(api.pageParam['root'])
+			if(api.pageParam['root']){
+				api.execScript({
+					name : 'root',
+					frameName : 'frame_0',
+					script : 'winclose();'
+				}); 
+			}else{
+				// 关闭当前页面
+				api.execScript({
+					name : 'xiaoshipin_win',
+					frameName : 'xiaoshipin_'+win_index,
+					script : 'winclose();'
+				}); 
+			}
+			 
+		}
+		function ping(){
+	 		xiaoshipin_ping_win=1
+	 		var h=api.winHeight;
+	 		api.openFrame({
+				name : 'xiaoshipin_ping_win',
+				url : html_win+'xiaoshipin_ping.html',
+				bounces : false,
+				rect : {
+					x : 0,
+					y : h-(h/1.5),
+					w : 'auto', 
+					h : h/1.5,
+				},
+				bgColor:'rgba(0,0,0,0)',
+				animation:{
+					type:"movein",                //动画类型（详见动画类型常量）
+				    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+				    duration:300    
+				},
+				pageParam:sx
+			})
+//			console.log(h-(h/2))
+//			console.log(h/1.5)
+	 	}
+	 	function ping_s(id){
+	 	//	console.log($('#id'+id).data('data'))
+	 		sx = $('#id'+id).data('data');
+	 		ping();
+	 	}
+	 	// 设置已打开 
+	 	function xiaoshipin_ping_win_url(){
+	 		console.log('xiaoshipin_ping_win_url执行了')
+	 		xiaoshipin_ping_win = 0;
+	 	}
+	 	// 赞
+		function pingZan() {
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+		//	var a=$('.pingZan');
+			var a=$('.swiper-slide-active .pingZan')
+			var type = a.data('id');
+			if (!type) {
+				a.addClass('pingZanColor');
+				a.data('id', '1');
+				a.html("<img src=\"../image/sx-xiaoshipin_zans.png\" />\r\n<p> "+(sx.zan+1)+"</p>");
+				_ajax('api/member/zancai',function(ret,err){
+					if(ret){
+						if(ret.err){
+							_msg(ret.err)
+						}
+					}
+				},{aid:sx.id,type:1})
+			} else {
+				_msg('您已经赞过')
+			}
+		}
+		// 关注
+		function guanzhu() {
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+			_loading()
+	 
+			var a=$('.swiper-slide-active #guanzhu')
+			// 1关注 2取消关注
+			var type = a.data('id')
+			if (type == 1) {
+				a.text('关注中');
+				_ajax('api/member/guanzhu/',function(ret,err){
+					_loadingCloes()
+					if(ret.ret){
+						a.text('已关注')
+						a.data('id', 2)
+						a.removeClass('aui-btn-danger');
+					}else{
+						a.text('关注');
+						_msg(ret.err)
+					}
+				},{gz_uid:sx.uid})
+			} else if (type == 2) {
+				a.text('取消中');
+				_ajax('api/member/guanzhuDel/',function(ret,err){
+					_loadingCloes()
+					if(ret.ret){
+						a.text('关注')
+						a.data('id', 1)
+						a.addClass('aui-btn-danger');
+					}else{
+						a.text('已关注');
+						_msg(ret.err)
+					}
+				},{gz_uid:sx.uid})
+			} 
+		}
+		// 分享
+		function fenxiang(){
+			if(api.pageParam['root']){
+				api.execScript({
+					name : 'root',
+					frameName : 'frame_0',
+					script : 'fenxiang();'
+				}); 
+			}else{
+				api.execScript({
+					name : 'xiaoshipin_win',
+					frameName : 'xiaoshipin_'+win_index,
+					script : 'fenxiang()'
+				});
+			}
+		}
+		//用来判断打开输入框   1 使用open打开  2 使用显示
+		function pingAdd(username,pingId) {
+			if(!pingId){pingId=0}
+			pingIds=pingId;
+			if(!_user){
+				_login();
+				return;
+			}
+			if(username){
+				username='回复   '+username+'：'
+			}else{
+				username='优质评论将会被优先展示';
+			}
+			if (pingAddPen == 1) {
+				pingAddPen = 2;
+				inputField.open({
+					bgColor : '#fff',
+					lineColor : '#D8D8D8',
+					fileBgColor : '#f5f5f5',
+					borderColor : '#F4F5F6',
+					//					sendImg : 'widget://res/img/sendImg.png',
+					autoFocus : true,
+					placeholder : username,
+					placeholderStyles : {
+						color : '#bbb', //字符串类型；占位文字颜色，支持rgb、rgba、#；默认：#696969
+						size : 14, //数字类型；占位文字大小；默认：13
+						marginL : 5 //数字类型；占位文字距离左边的大小；默认：5
+					},
+					maxLines : 3,
+					sendBtn : {
+						bg : '#03a9f4', //字符串类型；发送按钮常态背景色
+						bgHighlight : '#0287BF', //字符串类型；发送按钮点击时的高亮背景色
+						title : '发送', //字符串类型；发送按钮的标题
+						titleSize : '14', //数字类型；发送按钮的标题字体大小
+						titleColor : '#fff', //字符串类型；发送按钮标题文字颜色
+						corner : 5 //数字类型；发送按钮圆角大小
+					},
+				}, function(ret, err) {
+					if (ret) {
+						if (ret.msg == '') {
+							_msg('请输入评价');
+						} else {
+							pingAddTent(ret.msg);
+							pingHide()
+							inputField.resignFirstResponder();
+						}
+					} else {
+						//_msg(JSON.stringify(err));
+					}
+				});
+			} else {
+				inputField.setPlaceholder({
+				    placeholder: username
+				});
+				inputField.becomeFirstResponder(function(ret, err) {
+					if (ret.status) {
+						 
+						setTimeout(function() {
+							pingHide(1)
+						}, 500)
+					} else {
+						//alert(JSON.stringify(err));
+					}
+				});
+			}
+		}
+		// 评论开关   0关 1开
+		function pingHide(a){
+			if(a==1){
+				inputField.show();
+				inputField.becomeFirstResponder()
+			}else{
+				inputField.hide();
+				inputField.resignFirstResponder();
+			}
+			 
+		}
+
+		// 插入评论
+		function pingAddTent(text) {
+			if(text){
+				var html=''
+				//console.log('aid:'+sx.id+'pingId:'+pingIds)
+				_ajax('api/member/ping',function(ret,err){	
+				console.log(JSON.stringify(ret)+JSON.stringify(err))
+					api.pageParam['pingNum']++;
+					// 更新评论数量
+					api.execScript({
+						name : 'xiaoshipin_win',
+						frameName : 'xiaoshipin_ping',
+						script : 'pingnum('+api.pageParam['pingNum']+')'
+					});
+					$('#sx-huifuNum').text(api.pageParam['pingNum']);
+					
+//					api.execScript({
+//						name : 'xiaoshipin_win',
+//						frameName :  'xiaoshipin_'+win_index,
+//						script : 'shuaxin(1)'
+//					});
+					
+				},{aid:sx.id,content:text,pingId:pingIds})
+				_msg('发布成功')
+			} 
+		}
+		// 更新视频地址
+		function videoUrl(videos){
+			if(api.pageParam['root']){
+				api.execScript({
+					name : 'root',
+					frameName : 'frame_0',
+					script : 'huavideo("'+videos+'")'
+				});
+			}else{
+				api.execScript({
+					name : 'xiaoshipin_win',
+					frameName : 'xiaoshipin_'+win_index,
+					script : 'huavideo("'+videos+'")'
+				});
+			}
+		//	_this.css('opacity','0');
+		}
+		// 隐藏背影大图
+		function hide_img(){
+			setTimeout(function(){
+				$('.swiper-slide-prev #sltu').css('opacity','1');
+				$('.swiper-slide-next #sltu').css('opacity','1');
+				$('.swiper-slide-active #sltu').css('opacity','0');
+			},300)
+			 
+		//	console.log('隐藏成功')
+		}
+	</script>
+</html>

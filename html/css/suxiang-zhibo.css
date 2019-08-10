@@ -1,0 +1,504 @@
+/*
+// +----------------------------------------------------------------------
+// | 南昌速翔网络科技有限公司 
+// +----------------------------------------------------------------------
+// | 新闻资讯APP系统 V1.0版
+// +----------------------------------------------------------------------
+// | QQ技术：1424445608   电话/微信：15622289461
+// +----------------------------------------------------------------------
+// | 请务必尊重知识产权 严格保证不恶意传播产品源码、不得直接对产品本身
+// | 进行二次转售或倒卖、不得对产品进行简单包装后声称为自己的产品等。
+// | 否则我们有权利收回产品，并根据事态轻重追究相应法律责任。
+// +----------------------------------------------------------------------
+// | Copyright (c) 2018-2019 http://www.suxiangw.com/ All rights reserved.
+// +----------------------------------------------------------------------
+*/
+
+.view-header .aui-media-list
+,.view-header ul
+,.view-header li
+,.view-footer
+,.aui-bar-tab
+{
+	border: 0 !important; 
+	background: none !important;
+}
+
+.sx-zhibo .aui-card-list-header{
+	margin: 0.5rem 0.75rem;
+	min-height: 2.5rem;
+	position: relative;
+	padding: 0;
+}
+.sx-zhibo .aui-card-list-content-padded{
+	padding: 0;
+	margin: 0.75rem;
+	margin-top:0.5rem;
+}
+.sx-zhibo .aui-card-list-content-padded .text{
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	padding: 0.3rem 0.5rem;
+	padding-bottom:1rem;
+	background-image: -webkit-linear-gradient(rgba(0,0, 0, 1) 0%, rgba(0,0, 0, 0) 80%);
+	background-image: -moz-linear-gradient(rgba(0,0, 0, 1) 0%, rgba(0,0, 0, 0) 80%);
+	background-image: -o-linear-gradient(rgba(0,0, 0, 1) 0%, rgba(0,0, 0, 0) 80%);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0,0, 0, 1)), color-stop(0.8, rgba(0,0, 0, 0)));
+	background-image: linear-gradient(rgba(0,0, 0, 1) 0%, rgba(0,0, 0, 0) 80%);
+}
+.sx-zhibo .aui-card-list-content-padded .text .hf{
+	background: #FE8036
+}
+.sx-zhibo .aui-card-list-user-avatar{
+	width: 2.2rem;
+}
+.sx-zhibo em{
+	position: absolute;
+	right: 0;
+	top:0.5rem;
+	height: 1rem;
+	width: 2rem;
+}
+.sx-zhibo em img{
+	padding: 0.5rem;
+}
+.sx-zhibo .aui-card-list-user-name{
+	padding-top: 0.5rem;
+	font-size: 0.75rem;
+}
+.sx-zhibo .aui-card-list-content-padded .text p{
+	font-size: 0.75rem;
+	color: #fff;
+}
+.sx-zhibo .aui-card-list-content-padded .text span{
+	background: #F95859;
+	color: #fff;
+	font-size: 0.65rem;
+	border-radius: 0.2rem;
+	padding: 0.15rem 0.3rem;
+	margin-right: 0.5rem;
+}
+.sx-close img{
+	width: 1rem;
+}
+.sx-add-title{
+	padding-top: 1rem;
+	position: relative;
+	padding-bottom: 0.5rem;
+}
+.sx-add-title input{
+	padding-right: 2rem;
+}
+.sx-add-title i{
+	position: absolute;	
+	top: 1.2rem;
+	right: 0rem;
+	color: #CACACA;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+.sx-add-tags{
+	border: 1px solid #F95859;
+	display: inline-block;
+	border-radius: 3rem;
+	color: #F95859;
+	padding: 0.2rem 0.75rem;
+	font-size: 0.75rem;
+}
+.sx-add-tags span.aui-icon-right{
+	font-weight: bold;
+	font-size: 0.6rem;
+	padding-left: 0.1rem;
+}
+
+.sx-add-img{
+	margin-top: 2rem;
+}
+.sx-add-img h2{
+	font-size: 0.85rem;
+	color: #000;
+}
+.sx-add-img-s div,.sx-add-img-s div img{
+	background:#F6F5F5 url('../image/zhibo/sx-add-img-s.png') no-repeat center center;
+	background-size:2rem;
+	height: 6.5rem;
+	position: relative;
+	border-radius: 0.5rem;
+}
+.sx-add-img-s div img{
+	width: 100%;
+}
+.sx-add-img-s div.sx-add-img-l{
+	width: 65%;
+}
+.sx-add-img-s div.sx-add-img-r{
+	width: 30%;
+}
+.sx-add-img-s div p{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color:rgba(0,0,0,0.3);
+	color: #fff;
+	text-align: center;
+	padding: 0.2rem 0;
+	border-bottom-left-radius:0.35rem;
+	border-bottom-right-radius:0.5rem;
+	font-size: 0.65rem;
+}
+.sx-btn{
+	background: #F95859;
+	color: #fff;
+	font-weight: bold;
+	margin-top: 2rem;
+}
+.sx-btn:active{
+	background: #890505;
+	color: #fff;
+}
+
+/* 详细UI界面 */
+.view-header .aui-list-item-media{
+	width: 3.5rem;
+}
+.view-header .aui-list-item-text{
+	color: #fff;
+	font-size: 0.75rem;
+}
+.view-header .aui-list-item-text:nth-last-child(1){
+	font-size: 0.65rem;
+	color: #F0F0F0
+}
+
+.view-header img.close{
+	width: 1.8rem;
+	height: 1.8rem;
+	position: absolute;
+	right: 0.75rem;
+	top: 1.3rem;
+	display: inline-block;
+	background-color:rgba(0,0,0,0.2);
+	border-radius: 50%;
+	text-align: center;
+	padding: 0.38rem;
+}
+.view-header .view-renqi{
+	padding: 0 1rem;
+	color: #fff;
+	margin-top: 0.2rem;
+}
+.view-renqi-1 div{
+	display: inline-block;
+	margin-right: 1rem;
+}
+.view-renqi-1 div span{
+	color: #fff;
+	font-size: 0.65rem;
+	padding-left: 0.15rem;
+}
+.view-renqi-1 div img{
+	width: 1rem;
+	vertical-align: middle;
+	display: inline-block;
+}
+.view-sz{
+	background: rgba(0,0,0,0.2) url('../image/zhibo/view-sz.png') no-repeat 0.5rem center;
+	background-size:1rem;
+	border-radius: 2rem;
+	color: #fff;
+	font-size: 0.65rem;
+	display: inline-block;
+	padding: 0.35rem 1rem;
+	margin-top: 0.75rem;
+	margin-left: 0.75rem;
+	padding-left: 1.8rem;
+}
+
+.view-footer{
+	padding: 0.75rem;
+	min-height: 0rem;
+	width: 100%;
+}
+.view-footer .aui-bar-tab-item{
+	height: auto;
+}
+.view-footer .view-footer-2,.view-footer .view-footer-3{
+	width: 2.4rem;
+	margin: 0 auto;
+	text-align: center;
+}
+.view-footer .view-footer-2 p,.view-footer .view-footer-3 p{
+	width: 1.8rem;
+	border-radius: 50%;
+	background: rgba(0,0,0,0.2);
+	text-align: center;
+	height: 1.8rem;
+	margin: 0 auto;
+	padding: 0.5rem;
+}
+.view-footer p.hk{
+	background:none;
+	padding: 0rem;
+	border-radius: 0;
+}
+.view-footer .view-footer-2 img,.view-footer .view-footer-3 img{
+	text-align: center;
+	margin: 0 auto;
+	padding: 0.1rem;
+}
+.view-footer .view-footer-1{
+	width: auto;
+}
+.view-footer .view-footer-1 p{
+	background: rgba(0,0,0,0.2);
+	border-radius: 3rem;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	text-align: left;
+	padding-left: 0.75rem;
+	font-size: 0.65rem;
+	margin-right: 1rem;
+	color: #fff;
+}
+.view-footer .view-footer-2{
+}
+.view-footer .view-footer-3{
+	
+}
+.view-footer div{
+ 
+}
+
+
+/* 聊天室 */
+.view-liaotian::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    display:none;
+}
+.view-liaotian{
+	height: 10rem;
+	overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    width: 90%;
+    padding-bottom: 1rem;
+}
+.view-liaotian p{
+	font-size: 0.75rem;
+	border-radius: 0.75rem;
+	margin-top: 0.3rem;
+	display: inline-block;
+	background: rgba(0,0,0,0.2);
+	padding: 0.15rem 0.5rem;
+	clear: both;
+	line-height: 1.1rem;
+	color:#FFD600 !important;
+	letter-spacing:1px;
+}
+.view-liaotian p span{
+	background: #F8091C;
+	font-size: 0.65rem;
+	border-radius: 0.35rem;
+	padding: 0.1rem 0.3rem;
+	margin-right: 0.35rem;
+	color: #fff !important;;
+}
+/* 标志红色颜色 */
+.view-liaotian p span.b0{
+	background: #FF0000 !important;
+}
+/* 标志红色颜色  系统专用 */
+.view-liaotian p span.b1{
+	background: #FF0000 !important;
+}
+/* 标志红色颜色 直播专用 */
+.view-liaotian p span.b2{
+	background: #FE3881 !important;
+}
+
+
+/* 白色颜色 */
+.view-liaotian p.p{
+	color: #fff !important;;
+}
+
+/* 警告颜色 */
+.view-liaotian p.p0{
+	color: #F8091C !important;;
+}
+/* 提示颜色*/
+.view-liaotian p.p1{
+	color: #FF742D !important;;
+}
+/* 主播颜色 */
+.view-liaotian p.p2{
+	color: #FFD600 !important;;
+}
+/* 用户颜色 */
+.view-liaotian p.p3{
+	color:#FFD600 !important;;
+}
+
+
+.kaishi .kaishi-1 img{
+	
+}
+
+.kaishi .kaishi-1 p{
+	color: #fff;
+	font-size: 0.75rem;
+	padding-top: 0.35rem;
+	text-align: center;
+}
+.kaishi .kaishi-1 div{
+	width: 33.33333%;
+}
+.kaishi .kaishi-1 img{
+	width: 1.2rem;
+	margin: 0 auto;
+}
+.kaishi-2{
+	background: #F95555;
+	color: #fff;
+	border-radius: 0.35rem;
+	text-align: center;
+	width: 80%;
+	margin: 1rem auto;
+	padding: 0.75rem 0;
+}
+
+/* 直播分类 */
+.type_add{
+	padding: 0.75rem;
+}
+.type_add .type_add_p{
+	font-size: 0.75rem;
+	padding: 0.35rem;
+}
+.type_add_h2{
+	background: #fff;
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+	font-size: 0.75rem;
+	margin-top: 0.75rem;
+	overflow: hidden;
+}
+.type_add_h2 span{
+	color: #222;
+}
+.type_add_h2 .h2{
+	color: #F95555;
+}
+.type_add_h2 .h3{
+	text-align: right;
+	color: #616161;
+	font-size: 0.65rem;
+}
+.type_add_h2 .h3 i.aui-icon-down{
+	font-weight: bold;
+	color: #616161;
+	font-size: 0.56rem;
+}
+.type_add .aui-row{
+	font-size: 0.75rem;
+	margin: 0 -0.5rem;
+	clear: both;
+}
+.type_add .aui-row .aui-col-xs-6{
+	padding: 0 0.3rem;
+	margin-top: 0.5rem;
+}
+.type_add .aui-row .aui-col-xs-6 div{
+	background: #EBEBEB;
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+	color: #696969
+}
+.type_add_h2 .h1{
+	font-size: 0.8rem;
+}
+
+
+.sx-close{
+	padding: 0.75rem;
+	display: inline-block;
+	margin: -0.75rem;
+}
+/* msg */
+.view_frm_msg{
+	position: relative;
+	width: 250px;
+	background-image: -webkit-linear-gradient(left,rgba(0,0, 0, 0.2) 0%, rgba(0,0, 0, 0) 80%);
+	border-radius: 5rem;
+	animation: bounceInLeft 1s;
+	margin-left: 0.5rem;
+	transition:max-height 3s;
+}
+.view_frm_msgs{
+	padding: 0.25rem;
+	position: relative;
+	margin-top: 1rem;
+	position: relative;
+    -webkit-box-sizing: border-box;
+    		box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: justify;
+}
+.view_frm_msg .a1{
+	width: 54px;
+	height:54px;
+	border-radius: 50%;
+	margin-right: 0.35rem;
+}
+.view_frm_msg .a2{
+	width: 120px;
+	line-height: 25px;
+}
+.view_frm_msg .a2 h2{
+	color: #fff;
+}
+.view_frm_msg .a2 p{
+	color: #FFD600
+}
+.view_frm_msg .a3{
+	position:absolute;
+	right:0;
+	top:0rem;
+	width: 5rem;
+	margin-top: -1rem;
+	margin-right: 0rem;
+}
+@keyframes bounceInLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(25px, 0, 0);
+  }
+  75% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  90% {
+    transform: translate3d(5px, 0, 0);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+
+
+
+
+
+
+
+

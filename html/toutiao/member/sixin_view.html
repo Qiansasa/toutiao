@@ -1,0 +1,627 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/sixin.css" />
+		<style>
+		body{
+	background: #EBEBEB;
+	
+}
+#sx-view{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin-bottom: 5rem;
+}
+.voice{             
+        position: relative;
+        background-image: url(../image/2019/rong/stop.png);
+        background-repeat: no-repeat;
+        background-position: 0 -0.1rem;
+        background-size: 1.4rem auto;
+        padding-left: 1.4rem;
+        padding-right: 1.4rem;
+        color: #424242;
+}
+.voice_s{
+	background-image: url(../image/2019/rong/playing.gif);
+    background-repeat: no-repeat;
+    background-position: 0 -0.1rem;
+    background-size: 1.4rem auto;
+}
+.aui-chat .aui-chat-header {
+				margin-bottom: 0px;
+			}
+			.aui-chat .aui-chat-content {
+				color: #212121;
+				font-size: 0.75rem;
+				border-radius: 0.2rem;
+				position: relative;
+				padding: 0.3rem;
+			 
+				word-break: break-all;
+				word-wrap: break-word;
+			}
+			.aui-chat .aui-chat-content img {
+				max-width: 100%;
+				display: inline;
+				border-radius: 0.2rem;
+				vertical-align:middle
+			}
+			.aui-chat .aui-chat-left .aui-chat-content{
+			 
+				float: left;
+				left: 0.5rem;
+			}
+			.aui-chat .aui-chat-right .aui-chat-content{
+				 
+				right: 0.5rem;
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="aui-chat" id="sx-view"></section>
+	 
+	</body>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var rong, id = 0, roots = 1, photoBrowser,UIChatBox
+		apiready = function() {
+			id = "" + api.pageParam['id'];
+			rong = api.require('rongCloud2');
+			UIChatBox = api.require('UIChatBox');
+			photoBrowser = api.require('photoBrowser');
+			init();
+			// 应用从后台回到前台事件
+			api.addEventListener({
+				name : 'resume'
+			}, function(ret, err) {
+				 
+			});
+			
+	 
+			//监听 recordBtn 按住语音
+			UIChatBox.addEventListener({
+				target : 'recordBtn',
+				name : 'press'
+			}, function(ret, err) {
+				if (ret) {
+					//    console.log("语音开始ret："+JSON.stringify(ret));
+					sj1 = new Date().getTime();
+					if (ret) {
+						var savePath = 'fs://cgg_' + (+new Date()) + '.amr';
+						api.startRecord({
+							path : savePath
+						});
+						//   console.log(savePath)
+					}
+				} else {
+					console.log("语音开始err：" + JSON.stringify(err));
+				}
+			});
+			//监听 recordBtn 松开语音
+			UIChatBox.addEventListener({
+				target : 'recordBtn',
+				name : 'press_cancel'
+			}, function(ret, err) {
+				if (ret) {
+					//    console.log("我松开了ret："+JSON.stringify(ret));
+					var sj2 = new Date().getTime() - sj1;
+					if (sj2 <= 2000) {
+						stopRecord();
+						_msg('语音时间较短，请重新录音')
+					} else if (sj2 > 2000) {
+						api.stopRecord(function(ret, err) {
+							if (ret.duration > 0) {
+								// 发送语音
+								sendVoiceMessage(ret.path, ret.duration);
+							}
+						});
+					}
+				} else {
+					console.log("我松开了err：" + JSON.stringify(err));
+				}
+			});
+			var winHeight = api.winHeight;
+			UIChatBox.addEventListener({
+				target : 'inputBar',
+				name : 'move'
+			}, function(ret, err) {
+				if (ret) {
+					if (api.systemType == 'ios') {
+						$api.css($api.dom('#sx-view'), 'padding-bottom:' + ret.panelHeight + 'px');
+					}
+					_gun();
+				}
+			});
+			rong.setOnReceiveMessageListener(function(ret, err) {
+				if(ret.result.message){
+					_html(ret.result.message);
+					clearMessagesUnreadStatus();
+				}
+			})
+		}
+		function init(){
+			// 弹出聊天框
+			i();
+			// 获取聊天记录
+			_getLatestMessages();
+			// 清除某一会话的消息未读状态
+			clearMessagesUnreadStatus();
+		}
+		// 插入html消息
+		function _html(ret) {
+	//		console.log(JSON.stringify(ret))
+	 
+				if (!ret.content.extra) {
+					ret.content.extra = "{uid:" + _user.id + ",img:'" + _user.img + "',nickname:'" + _user.username + "'}";
+				} else {
+				}
+			//	ret.content.extra = '{nickname:"1",img:"2"}'
+				var extra = eval('(' + ret.content.extra.replace(/}{/, ',') + ')');
+				//	console.log(extra.img)
+				var text = ret.content.text;
+				var idclass = ret.senderUserId != _user.id ? 'left' : 'right';
+				var html = '<div class="aui-chat-item aui-chat-' + idclass + '">';
+				html += '<div class="aui-chat-media">';
+				html += '<img src="' + (ret.senderUserId == _user.id ? _user.img+'?imageView2/1/w/50/h/50/format/jpg' : extra.img+'?imageView2/1/w/50/h/50/format/jpg') + '"  />';
+				html += '</div>';
+				html += '<div class="aui-chat-inner">';
+				html += '<div class="aui-chat-name">';
+				html += (ret.senderUserId == _user.id ? _user.nickname : extra.nickname);
+				html += '</div>';
+				html += '<div class="aui-chat-content">';
+				html += '<div class="aui-chat-arrow"></div>';
+				if (ret.objectName == 'RC:TxtMsg') {
+					html += _text(ret.content.text);
+				//	console.log(html)
+				} else if (ret.objectName == 'RC:ImgMsg') {
+					html += '<img src="' + ret.content.thumbPath + '" tapmode onclick="img(\'' + ret.content.imageUrl + '\')" />';
+				} else if (ret.objectName == 'RC:VcMsg') {
+					html += '<div class="voice" tapmode onclick="play(this,\'' + ret.content.voicePath + '\')">' + ret.content.duration + '</div>';
+				} else {
+					html += JSON.stringify(ret);
+				}
+				html += '</div></div></div>';
+			//	console.log(html)
+				$api.append($api.dom('#sx-view'), html);
+				api.parseTapmode();
+				_gun();
+				return;
+				if (roots == 1) {
+					var scrollHeight = $(document).height();
+					//文档高度
+					window.scrollTo(0, scrollHeight);
+					//到达文档底部
+				} else {
+					_gun();
+				}
+		 
+		}
+
+	 
+
+		// 获取最新聊天记录 
+		function _getLatestMessages() {
+			// 之前调用 init 和 connect 的代码省略
+			rong.getLatestMessages({
+				conversationType : 'PRIVATE',
+				targetId : id,
+				count : 20
+			}, function(ret, err) {
+			//	console.log(JSON.stringify(ret))
+				if (ret) {
+					if (ret.status == 'success') {
+		 		 
+					//	console.log(ret.result.length);
+						var i_s = ret.result.length - 1;
+				 
+						for (var i = 0; i < ret.result.length; i++) {
+							 
+							_html(ret.result[i_s]);
+							i_s--
+							//console.log(i_s)
+						}
+						//渲染模版
+						//				var evalData = doT.template($api.html($api.byId('sx-list')));
+						//				$api.html($api.byId('sx-view'), evalData(ret.result));
+					}
+				}
+			})
+		}
+
+		//终止录音
+		function stopRecord() {
+			api.stopRecord(function(ret, err) {
+			});
+		}
+
+		//播放录音
+		function play(_this, path) {
+			//console.log(path)
+			_this = $(_this);
+			_this.addClass('voice_s');
+			api.startPlay({
+				path : path
+			}, function() {
+				_this.removeClass('voice_s')
+			});
+		}
+
+		// 打开图片
+		function img(images) {
+			photoBrowser.open({
+				images : [images],
+				bgColor : '#000',
+				mode : 2
+			}, function(ret, err) {
+				if (ret.eventType == 'click') {
+					photoBrowser.close();
+				}
+			});
+		}
+
+		// 聊天框
+		function i() {
+			UIChatBox.open({
+				placeholder : '',
+				maxRows : 4,
+				emotionPath : _image + '2019/rong/emotion',
+				texts : {
+					recordBtn : {
+						normalTitle : '按住说话',
+						activeTitle : '松开结束'
+					},
+					sendBtn : {
+						title : '发送'
+					}
+				},
+				styles : {
+					topDivider : {//(可选项)顶部分割线配置
+						width : 0, //(可选项)顶部分割线的粗细，默认：0
+						color : '#000' //(可选项)顶部分割线的颜色；默认：#000 ;支持图片设置(fs:// & widget://)
+					},
+					inputBar : {
+						borderColor : '##F9F9F8',
+						bgColor : '#F9F9F8'
+					},
+					inputBox : {
+						borderColor : '#e8e8e8', //（可选项）字符串类型；输入框的边框颜色，支持 rgb，rgba，#；默认：'#B3B3B3'
+						bgColor : '#ffffff', //（可选项）字符串类型；输入框的背景色，支持 rgb，rgba，#；默认：'#f2f2f2'
+						boardBgColor : '#fff', //（可选项）字符串类型；面板的背景色(表情面板，附加面板)，支持 rgb，rgba，#；默认：'#f2f2f2'
+						topMargin : 10,          //（可选项）数字类型；输入框距离顶部的边距；默认：10
+					},
+					emotionBtn : {
+						normalImg : _image + '2019/rong/face1.png'
+					},
+					extrasBtn : {
+						normalImg : _image + '2019/rong/add1.png'
+					},
+					keyboardBtn : {
+						normalImg : _image + '2019/rong/key1.png'
+					},
+					//			speechBtn : {
+					//				normalImg : _i + 'c/rec.png'
+					//			},
+					recordBtn : {
+						normalBg : '#e8e8e8',
+						activeBg : '#c4c4c4',
+						color : '#000',
+						size : 14
+					},
+					recordPanelBtn : {//JSON对象；录音面板样式
+						normalImg : '', //（可选项）字符串类型；按钮常态的图片
+						activeImg : '', //（可选项）字符串类型；按钮按下时的图片
+						width : 100, //（可选项）数字类型；按钮的宽度，默认：100
+						height : 100 //（可选项）数字类型；按钮的高度，默认：100
+					},
+					indicator : {
+						target : 'both',
+						color : '#c4c4c4',
+						activeColor : '#9e9e9e'
+					},
+					sendBtn : {
+						titleColor : '#fff',
+						bg : '#419fd9',
+						activeBg : '#247DB3',
+						titleSize : 15
+					}
+				},
+				extras : {
+					titleSize : 10,
+					titleColor : '#a3a3a3',
+					btns : [{
+						title : '相册图片',
+						normalImg : _image + '2019/rong/img1.png',
+						activeImg : _image + '2019/rong/img2.png'
+					}, {
+						title : '相机拍照',
+						normalImg : _image + '2019/rong/cam1.png',
+						activeImg : _image + '2019/rong/cam2.png'
+					}]
+				},
+			}, function(ret, err) {
+				if (ret) {
+					//console.log("ret：" + JSON.stringify(ret));
+					// 发送按钮
+					if (ret.eventType == 'send') {
+						// 开始发送
+						sendTextMessage(ret.msg);
+					}
+					// 点击+
+					if (ret.eventType == 'clickExtras') {
+						_images(ret.index)
+					}
+				} else {
+					//	console.log("err：" + JSON.stringify(err));
+				}
+			});
+		}
+
+		// 发送文字消息
+		function sendTextMessage(text) {
+			rong.sendTextMessage({
+				conversationType : 'PRIVATE',
+				targetId : id,
+				text : text,
+				extra : "{uid:'" + _user.id + "',img:'" + _user.img + "',nickname:'" + _user.username + "'}"
+			}, function(ret, err) {
+				if (ret) {
+					 console.log(JSON.stringify(ret))
+					if (ret.status == 'success' || ret.status == 'prepare') {
+						_html(ret.result.message);
+						// 更新聊天列表
+						gengxin();
+					}
+				} else {
+					sendTextMessage_err(err.code)
+				}
+			});
+		}
+
+		// 发送图片
+		function sendImageMessage(img) {
+			rong.sendImageMessage({
+				conversationType : 'PRIVATE',
+				targetId : id,
+				imagePath : img,
+				extra : "{uid:'" + _user.id + "',img:'" + _user.img + "',nickname:'" + _user.username + "'}"
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.status == 'prepare') {
+						_html(ret.result.message);
+						// 更新聊天列表
+						gengxin();
+					}
+				} else {
+					sendTextMessage_err(err.code)
+				}
+			});
+		}
+
+		// 发送语音
+		function sendVoiceMessage(voicePath, duration) {
+			rong.sendVoiceMessage({
+				conversationType : 'PRIVATE',
+				targetId : id,
+				voicePath : voicePath,
+				duration : duration,
+				extra : "{uid:'" + _user.id + "',img:'" + _user.img + "',nickname:'" + _user.username + "'}"
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.status == 'prepare') {
+						_html(ret.result.message);
+						// 更新聊天列表
+						gengxin();
+					}
+				} else {
+					sendTextMessage_err(err.code)
+				}
+			});
+		}
+
+		// 选择图片或拍照上传
+		function _images(index) {
+			var sourceType = 'library'
+			if (index == 1) {
+				sourceType = 'camera';
+			}
+			api.getPicture({
+				sourceType : sourceType,
+				encodingType : 'png',
+				mediaValue : 'pic',
+				destinationType : 'url',
+				quality : 100,
+				saveToPhotoAlbum : false
+			}, function(ret, err) {
+				if (ret) {
+					sendImageMessage(ret.data)
+				} else {
+					//    console.log("err："+JSON.stringify(err));
+				}
+			});
+		}
+
+		// 发送失败返回信息
+		function send_err(msg) {
+			switch(msg) {
+				case '30014':
+					_alert('发送处理失败，错误码：' + msg)
+					break;
+				case '30003':
+					_alert('服务器超时，错误码：' + msg)
+					break;
+				case '31009':
+					_alert('用户被屏蔽，错误码：' + msg)
+					break;
+				case '-10000':
+					_alert('未调用 init 方法进行初始化，错误码：' + msg)
+					break;
+				case '-10001':
+					_alert('未调用 connect 方法进行连接，错误码：' + msg)
+					break;
+				case '-10002':
+					_alert('输入参数错误，错误码：' + msg)
+					break;
+				default:
+					_alert('用户在黑名单中，错误码：' + msg);
+			}
+		}
+
+		function _text(text) {
+			_image = '../../../html/image/'
+			//表情符号转换
+			var reg = /\[.+?\]/g;
+			var face = {
+				'[微笑]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_1.png"  width="28"/></span>',
+				'[撇嘴]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_2.png"  width="28" /></span>',
+				'[色]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_3.png"  width="28" /></span>',
+				'[发呆]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_4.png"  width="28" /></span>',
+				'[得意]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_5.png"  width="28" /></span>',
+				'[流泪]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_6.png"  width="28" /></span>',
+				'[害羞]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_7.png"  width="28" /></span>',
+				'[闭嘴]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_8.png"  width="28" /></span>',
+				'[睡]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_9.png"  width="28" /></span>',
+				'[大哭]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_10.png"  width="28"/></span>',
+				'[尴尬]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_11.png"  width="28"/></span>',
+				'[发怒]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_12.png"  width="28"/></span>',
+				'[调皮]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_13.png"  width="28" /></span>',
+				'[呲牙]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_14.png"  width="28" /></span>',
+				'[惊讶]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_15.png"  width="28" /></span>',
+				'[难过]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_16.png"  width="28" /></span>',
+				'[酷]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_17.png"  width="28" /></span>',
+				'[冷汗]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_18.png"  width="28" /></span>',
+				'[抓狂]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_19.png"  width="28" /></span>',
+				'[吐]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_20.png"  width="28" /></span>',
+				'[偷笑]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_21.png"  width="28" /></span>',
+				'[愉快]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_22.png"  width="28" /></span>',
+				'[白眼]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_23.png"  width="28" /></span>',
+				'[傲慢]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_24.png"  width="28" /></span>',
+				'[饥饿]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_25.png"  width="28" /></span>',
+				'[困]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_26.png"  width="28" /></span>',
+				'[恐惧]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_27.png"  width="28" /></span>',
+				'[流汗]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_28.png"  width="28" /></span>',
+				'[憨笑]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_29.png"  width="28" /></span>',
+				/*从这*/
+				'[悠闲]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_30.png"  width="28" /></span>',
+				'[奋斗]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_31.png"  width="28" /></span>',
+				'[咒骂]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_32.png"  width="28" /></span>',
+				'[疑问]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_33.png"  width="28" /></span>',
+				'[嘘]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_34.png"  width="28" /></span>',
+				'[晕]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_35.png"  width="28" /></span>',
+				'[疯了]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_36.png"  width="28" /></span>',
+				'[衰]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_37.png"  width="28" /></span>',
+				'[骷髅]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_38.png"  width="28" /></span>',
+				'[敲打]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_39.png"  width="28"/></span>',
+				'[再见]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_40.png"  width="28"/></span>',
+				'[擦汗]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_41.png"  width="28"/></span>',
+				'[抠鼻]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_42.png"  width="28" /></span>',
+				'[鼓掌]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_43.png"  width="28" /></span>',
+				'[糗大了]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_44.png"  width="28" /></span>',
+				'[坏笑]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_45.png"  width="28" /></span>',
+				'[左哼哼]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_46.png"  width="28" /></span>',
+				'[右哼哼]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_47.png"  width="28" /></span>',
+				'[哈欠]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_48.png"  width="28" /></span>',
+				'[鄙视]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_49.png"  width="28" /></span>',
+				'[委屈]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_50.png"  width="28" /></span>',
+				'[快哭了]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_51.png"  width="28" /></span>',
+				'[阴险]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_52.png"  width="28" /></span>',
+				'[亲亲]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_53.png"  width="28" /></span>',
+				'[吓]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_54.png"  width="28" /></span>',
+				'[可怜]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_55.png"  width="28" /></span>',
+				'[菜刀]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_56.png"  width="28" /></span>',
+				'[西瓜]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_57.png"  width="28" /></span>',
+				'[啤酒]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_58.png"  width="28" /></span>',
+				'[篮球]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_59.png"  width="28" /></span>',
+				'[乒乓]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_60.png"  width="28" /></span>',
+				'[咖啡]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_61.png"  width="28" /></span>',
+				'[饭]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_62.png"  width="28" /></span>',
+				'[猪头]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_63.png"  width="28" /></span>',
+				'[玫瑰]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_64.png"  width="28" /></span>',
+				'[凋谢]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_65.png"  width="28" /></span>',
+				'[嘴唇]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_66.png"  width="28" /></span>',
+				'[爱心]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_67.png"  width="28" /></span>',
+				'[心碎]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_68.png"  width="28"/></span>',
+				'[蛋糕]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_69.png"  width="28"/></span>',
+				'[闪电]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_70.png"  width="28"/></span>',
+				'[炸弹]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_71.png"  width="28" /></span>',
+				'[刀]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_72.png"  width="28" /></span>',
+				'[足球]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_73.png"  width="28" /></span>',
+				'[瓢虫]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_74.png"  width="28" /></span>',
+				'[便便]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_75.png"  width="28" /></span>',
+				'[月亮]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_76.png"  width="28" /></span>',
+				'[太阳]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_77.png"  width="28" /></span>',
+				'[礼物]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_78.png"  width="28" /></span>',
+				'[拥抱]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_79.png"  width="28" /></span>',
+				'[强]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_80.png"  width="28" /></span>',
+				'[弱]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_81.png"  width="28" /></span>',
+				'[握手]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_82.png"  width="28" /></span>',
+				'[胜利]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_83.png"  width="28" /></span>',
+				'[抱拳]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_84.png"  width="28" /></span>',
+				'[勾引]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_85.png"  width="28" /></span>',
+				'[拳头]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_86.png"  width="28" /></span>',
+				'[差劲]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_87.png"  width="28" /></span>',
+				'[爱你]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_88.png"  width="28" /></span>',
+				'[NO]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_89.png"  width="28" /></span>',
+				'[OK]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_90.png"  width="28" /></span>',
+				'[爱情]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_91.png"  width="28" /></span>',
+				'[飞吻]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_92.png"  width="28" /></span>',
+				'[跳跳]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_93.png"  width="28" /></span>',
+				'[发抖]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_94.png"  width="28" /></span>',
+				'[怄火]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_95.png"  width="28" /></span>',
+				'[转圈]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_96.png"  width="28" /></span>',
+				'[磕头]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_97.png"  width="28"/></span>',
+				'[回头]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_98.png"  width="28"/></span>',
+				'[跳绳]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_99.png"  width="28"/></span>',
+				'[投降]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_100.png"  width="28" /></span>',
+				'[激动]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_101.png"  width="28" /></span>',
+				'[街舞]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_102.png"  width="28" /></span>',
+				'[献吻]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_103.png"  width="28" /></span>',
+				'[左太极]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_104.png"  width="28" /></span>',
+				'[右太极]' : '<span><img src="'+_image + '2019/rong/emotion/Expression_105.png"  width="28" /></span>'
+			};
+			text = text.replace(reg, function(a, b) {
+				return face[a] ? face[a] : a;
+			});
+			return text;
+		}
+		// 滚动顶部
+		function _gun(type) {
+			var time = 300
+			setTimeout(function() {
+				api.pageDown({
+					bottom : true,
+					animate : true
+				}, function(ret) {
+				});
+			}, time || 0)
+		}
+		// 清除某一会话的消息未读状态
+		function clearMessagesUnreadStatus(){
+			rong.clearMessagesUnreadStatus({
+			    conversationType: 'PRIVATE',
+			    targetId: id
+			}, function(ret, err) {
+			     gengxin();
+			})
+		}
+		// 更新聊天列表
+		function gengxin(){
+			api.sendEvent({
+			    name: 'rong_gengxin',
+			    extra: {
+			        gengxin: '1',
+			    }
+			});
+		}
+	</script>
+</html>

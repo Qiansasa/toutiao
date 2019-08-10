@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>认证</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style>
+			.aui-list-item-label-icon{
+				font-size: 0.75rem;
+				color: #000;
+				min-width: 4rem !important;
+			}
+			.img{
+				border-top:0.75rem solid #F4F6F7;
+				padding: 0.75rem;
+			}
+			.img div.aui-card-list-footer div{
+				width:48%;
+				height: 10rem;
+				background: #F4F6F7 url('../../image/2019/sfz_jia.png') no-repeat center center;
+				background-size: 3rem;
+				position: relative
+			}
+			.img p{
+				position: absolute;
+				bottom: 0.5rem;
+				text-align: center;
+				left: 0;
+				width: 100%;
+				font-size: 0.65rem;
+			}
+			.img img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content aui-margin-b-15 fx-reg">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							真实姓名
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" id="xingming" value="" placeholder="请输入真实姓名" Tapmode>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							身份证号
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" id="sfz" value="" placeholder="请输入真实身份证号码" Tapmode>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="img">
+				<h3>上传身份证明</h3>
+				<div class="aui-card-list-footer">
+					<div id="img_shou" data-img='' tapmode onclick="img(1)">
+						<p>
+							手持身份证照片
+						</p>
+					</div>
+					<div id="img_zheng" data-img='' tapmode onclick="img(2)">
+						<p>
+							身份证正面照片
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="aui-btn-blocks aui-margin-15">
+				<div class="aui-btn aui-btn-block aui-btn-danger " Tapmode onclick="add()">
+					提交认证
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var tijiao = 1,msg='无法操作';
+		apiready = function() {
+			api.parseTapmode();
+			info_sfz();
+		}
+		// 提交认证
+		function add(){
+			if(!tijiao){
+				return _msg(msg);
+			}
+			var xingming = $('#xingming').val();
+			if(!xingming){
+			   return _msg('请输入真实姓名');
+			}
+			var sfz = $('#sfz').val();
+			if(!sfz){
+			   return _msg('请输入真实身份证号码');
+			}
+			var sfz_shou = $('#img_shou').data('img');
+			if(!sfz_shou){
+			   return _msg('请上传手持身份证照片');
+			}
+			var img_zheng = $('#img_zheng').data('img');
+			if(!img_zheng){
+			   return _msg('请上传身份证正面照片');
+			}
+			_loading();
+			_ajax('api/member/sfz',function(ret,err){
+				_loadingCloes();
+				if(ret){
+					if(ret.ret){
+						_userInfo();
+						_alert(ret.ret,function(ret){
+							_close();
+						})
+					}else{
+						_alert(ret.err)
+					}
+				}else{
+					_alert(JSON.stringify(err))
+				}
+			},{xingming:xingming,sfz:sfz,sfz_shou:sfz_shou,img_zheng:img_zheng})
+		}
+		// 选择身份证
+		function img(type) {
+			api.getPicture({
+						sourceType : 'camera',
+			 
+						mediaValue : 'pic',
+						destinationType : 'url',
+						allowEdit : false,
+						quality : 50,
+				 
+					}, function(ret, err) {
+						if (ret) {
+							if (ret.data) {
+								imgAjax(ret.data,type)
+							}
+						}
+					});
+					
+			return;
+			var name = '手持身份证照片';
+			if (type == 2) {
+				name = "身份证正面照片";
+			}
+			api.actionSheet({
+				title : name,
+				cancelTitle : '取消',
+				buttons : ['拍照']
+			}, function(ret, err) {
+				var index = ret.buttonIndex;
+				if (index != 3) {
+					var sourceType = 'album'
+					if (index == 1) {
+						sourceType = 'camera'
+					}
+					api.getPicture({
+						sourceType : sourceType,
+						encodingType : 'jpg',
+						mediaValue : 'pic',
+						destinationType : 'url',
+						allowEdit : false,
+						quality : 50,
+						targetWidth : 800,
+						targetHeight : 800,
+					}, function(ret, err) {
+						if (ret) {
+							if (ret.data) {
+								imgAjax(ret.data,type)
+							}
+						}
+					});
+				}
+			});
+		}
+
+		// 封装上次图片方法
+		function imgAjax(image,type) {
+			if (!image) {
+				_msg('图片地址出错')
+				return;
+			}
+			_loading()
+			api.ajax({
+				url : fx_url + 'api/member/imagesUpload',
+				method : 'post',
+				data : {
+					values : {
+						token : _token,
+					},
+					files : {
+						image : image
+					}
+				},
+			}, function(ret, err) {
+				_loadingCloes();
+				if (ret) {
+					if (ret.ret) {
+						console.log(JSON.stringify(ret));
+						if(type == 2){
+							var _this = $('#img_zheng');
+						}else{
+							var _this = $('#img_shou');
+						}
+						_this.data('img',ret.ret);
+						_this.html('<img src="'+image+'" />');
+						_this.css('height','auto');
+					}else{
+						_msg(ret.err)
+					}
+				} else {
+					_alert(JSON.stringify(err))
+				}
+			});
+		}
+		// 获取认证信息
+		function info_sfz(){
+			_loading();
+			_ajax('api/member/info_sfz',function(ret,err){
+				_loadingCloes();
+				if(ret){
+					if(ret.hide == 1){
+						tijiao = 0;
+						msg = '实名已通过';
+						$('.aui-btn-danger').text(msg);
+						$('.aui-btn-danger').removeClass('aui-btn-danger');
+					}else if(ret.hide == 2){
+						tijiao = 0;
+						msg = '正在审核，无法操作';
+						$('.aui-btn-danger').text(msg);
+						$('.aui-btn-danger').removeClass('aui-btn-danger');
+					}
+					$('#xingming').val(ret.xingming);
+					$('#sfz').val(ret.sfz);
+					var _this = $('#img_shou');
+					_this.data('img',ret.sfz_shou);
+					_this.html('<img src="'+fx_cdn+ret.sfz_shou+'" />');
+					_this.css('height','auto');
+					_this = $('#img_zheng')
+					_this.data('img',ret.sfz_zheng);
+					_this.html('<img src="'+fx_cdn+ret.sfz_zheng+'" />');
+					_this.css('height','auto');
+				}
+			})
+		}
+	</script>
+</html>

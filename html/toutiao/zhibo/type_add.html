@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/suxiang-zhibo.css" />
+	</head>
+	<body style="background: #EAEAEA !important;">
+		<script id="sx-list" type="text/x-dot-template">
+		 	<p class="type_add_p"></p>
+		 	<div class="type_add_h2">
+		 		<span class="h1">当前直播分类：</span><span class="h2"></span>
+		 	</div>
+		 	{{ for(var i=0,len=it.length; i < len; i++) { }}
+		 	<div class="type_add_h2">
+		 		<span class="h1 aui-pull-left">{{= it[i].title }}</span>
+		 		<div class="aui-row">
+		 			{{ for(var i_s=0,it_s=it[i].data; i_s < it_s.length; i_s++) { }}
+		 			<div class="aui-col-xs-6" tapmode onclick="url({{= it_s[i_s].id }},'{{= it_s[i_s].title }}')">
+		 				<div>{{= it_s[i_s].title }}</div>
+		 			</div>
+		 			{{ } }}
+		 		</div>
+			</div>
+			{{ } }}
+		</script>
+		<div class="type_add" id="sx-view">
+			<div id="jiazai"><img src="../../image/loading_more.gif" /></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			data();
+		}
+		function data(){
+			_ajax('api/zhibo/typename',function(ret,err){
+				if(ret){
+				//	console.log(JSON.stringify(ret))
+					var evalData = doT.template($api.html($api.byId('sx-list')));
+					$api.html($api.byId('sx-view'), evalData(ret));
+					$api.html($api.dom('.type_add_p'),_config.zhibo.type_content);
+					if(api.pageParam['type_title']){
+						$api.text($api.dom('.type_add_h2 .h2'),api.pageParam['type_title']);
+					}else{
+						$api.css($api.dom('.type_add_h2'),'display: none')
+					}
+					api.parseTapmode();
+				}else{
+					_alert(JSON.stringify(err))
+				}
+			})
+		}
+		function url(id,title){
+			api.execScript({
+			    name: 'zhibo/add',
+			    script: '$(".sx-add-tags").data("id","'+id+'");$(".sx-add-tags").data("title","'+title+'");$(".sx-add-tags").html("'+title+'<span class=\'aui-iconfont aui-icon-right\'></span>")'
+			});
+			_close(1);
+		}
+	</script>
+</html>

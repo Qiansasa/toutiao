@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/ffxiang.css" />
+		<link rel="stylesheet" type="text/css" href="../css/footer_2019.css" />
+	</head>
+	<body>
+	 <footer class="aui-bar aui-bar-tab" id="fx-footer">
+			<div class="aui-bar-tab-item" tapmode onclick="_hone()">
+				<img class="aui-img-object" src="../image/2019/aqg.png" />
+				<div class="aui-bar-tab-label">
+					主页
+				</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="_index_win('video_win')" >
+				<img class="aui-img-object" src="../image/2019/aqo.png" />
+				<div class="aui-bar-tab-label">
+					视频
+				</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="_index_win('weitoutiao_win')">
+				<img class="aui-img-object" src="../image/2019/aqm.png" />
+				<div class="aui-bar-tab-label">
+					微头条
+				</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="_index_win('xiaoshipin_win')">
+				<img class="aui-img-object" src="../image/2019/bj4.png" />
+				<div class="aui-bar-tab-label">
+					小视频
+				</div>
+			</div>
+			<div class="aui-bar-tab-item aui-active">
+				<img class="aui-img-object" src="../image/2019/aqj.png" />
+				<div class="aui-bar-tab-label">
+					会员
+				</div>
+			</div>
+		</footer>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.addEventListener({
+			    name:'viewappear'
+			}, function(ret, err){      
+				_heibai(1)  
+			});
+			_heibai(1);
+			_openFrame('member', '1')
+			 
+		}
+	</script>
+</html>

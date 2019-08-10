@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+			html,body{
+				background-color: transparent !important
+			}
+	 		#fx-header{
+	 		 	background: #FF373C !important;
+	 		 	position: relative;
+	 		 	opacity:0;
+	 		}
+	 		#fx-header img{
+	 			height: 1.8rem;
+	 			margin: 0 auto;
+	 			text-align: center;
+	 			margin-top: 0.2rem;
+	 		}
+	 		.aui-btn{
+	 			position: absolute;
+	 			top: 0;
+	 			left: 0;
+	 			min-height: 2.25rem;
+	 			line-height:2.25rem;
+	 			background:none;
+	 			text-overflow:ellipsis;
+	 			z-index: 999;
+	 		}
+	 		.aui-btn span.aui-iconfont{
+	 			font-weight: bold;
+	 			color: #fff
+	 		}
+	 		.bei{
+	 			background: #F85959 !important;
+	 			overflow: hidden;
+	 			position: relative;
+	 			min-height:2.25rem;
+	 		}
+	 		.aui-bar-nav .aui-title{
+	 		 
+	 		}
+		</style>
+	</head>
+	<body>
+		<a class="aui-pull-left aui-btn b" tapmode onclick="c()"> <span class="aui-iconfont aui-icon-left"></span> </a>
+		<header class="aui-bar aui-bar-nav fx-view-header " id="fx-header">
+			<a class="aui-pull-left aui-btn" tapmode onclick="c()"></a>
+			<div class="aui-title">
+				<img src="../image/2019/b2b.png" />
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			var header = $api.byId('fx-header');
+			$api.fixStatusBar($api.dom('.b'));
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			api.execScript({
+			    script: 'h('+headerPos.h+')'
+			});
+		}
+		function show(opacity){
+		//	$('header').css('background-color','#F85959 !important');
+			$('header').css('opacity',opacity);
+//			api.setFrameAttr({
+//				name: 'redian_win',
+//				bgColor: '#F85959'
+//			});
+		}
+		function hide(opacity){
+		//	$('header').css('background-color','transparent !important');
+			$('header').css('opacity',opacity);
+//			api.setFrameAttr({
+//				name: 'redian_win',
+//				bgColor: 'rgb(0,0,0,0)'
+//			});
+		}
+		 
+		 
+	 
+	</script>
+</html>

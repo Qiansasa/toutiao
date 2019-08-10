@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/ffxiang.css" />
+		<style>
+			.by {
+				width: 100%;
+				height: 100%;
+				background: url('../../image/zhibo/load-svideo.png') center center !important;
+				background-repeat: no-repeat !important;
+				background-position: center !important;
+				background-size: cover !important;
+				-webkit-filter: blur(0.1rem);
+			}
+			.img{
+				width: 100%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				text-align: center;
+			}
+			img{
+				display: inline-block;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="by"></div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			if(api.pageParam['img_r']){
+				$api.css($api.dom('.by'),'background:url('+fx_cdn+api.pageParam['img_r']+') center center !important')
+				console.log($api.html($api.dom('body')))
+			}
+			 
+			api.setFullScreen({
+				fullScreen : true
+			});
+			api.showProgress({
+				title : '',
+				text : '',
+				modal : true,
+				animationType : 'zoom',
+			});
+			// 回到屏幕
+			api.addEventListener({
+				name : 'viewappear'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : true
+				});
+			});
+			// 离开屏幕
+			api.addEventListener({
+				name : 'viewdisappear'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+			});
+			//应用进入后台事件
+			api.addEventListener({
+				name : 'pause'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+			});
+			// 应用从后台回到前台事件
+			api.addEventListener({
+				name : 'resume'
+			}, function(ret, err) {
+				api.setFullScreen({
+					fullScreen : true
+				});
+			});
+			win();
+		}
+		function win() {
+			console.log(JSON.stringify(api.pageParam));
+			var password = api.pageParam['password'];
+			var nickname = api.pageParam['nickname'];
+		 	
+			var session = {
+				roomId : api.pageParam['roomId'],
+				password : password,
+				nickname : nickname
+			};
+			var core = api.require('gotyeLiveCore');
+			core.setDebugLogEnabled({
+				enabled : true
+			});
+			core.authRoomSession(session, function(ret, err) {
+				if (ret) {
+					console.log(JSON.stringify(ret));
+					var name = 'zhibo/view_frame';
+					api.pageParam['ret'] = ret;
+					api.openFrame({
+						name : name,
+						url : html_win + name + '.html',
+						rect : {
+							x : 0,
+							y : 0,
+							w : 'auto',
+							h : 'auto'
+						},
+						bounces : false,
+						bgColor : 'rgba(0,0,0,0)',
+						vScrollBarEnabled : false,
+						hScrollBarEnabled : false,
+						pageParam:api.pageParam
+					});
+				} else {
+					_alert("错误：" + JSON.stringify(err),function(ret,err){
+						_close();
+					})
+					_loadingCloes();
+				}
+			});
+		} 
+	</script>
+</html>

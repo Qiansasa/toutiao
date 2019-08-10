@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/ffxiang.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+		<style>
+			body {
+				background: transparent !important;
+			}
+			.t {
+				z-index: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.f {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				background: #201A17 !important;
+				z-index: 9;
+				border-top-left-radius: 1rem;
+				border-top-right-radius: 1rem;
+				padding-bottom: 3rem;
+			}
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+				padding: 0.7rem;
+			}
+			.swiper-slide {
+				padding: 0 0.5rem;
+				text-align: center;
+				color: #fff;
+			}
+			.swiper-slide p {
+				color: #fff;
+				font-size: 0.65rem;
+				padding-top: 0rem;
+			}
+			.swiper-slide span {
+				color: #999999;
+				font-size: 0.55rem;
+				display: inline-block;
+			}
+			.swiper-slide img {
+			}
+			.swiper-pagination {
+				text-align: right;
+				right: 0rem;
+				padding-right: 0.75rem;
+			}
+			.swiper-pagination-bullet {
+				background: #fff;
+				margin: 0 0.1rem;
+			}
+			.swiper-pagination-bullet-active {
+				background: #D43D3D;
+			}
+			.text {
+				position: absolute;
+				color: #fff;
+				-webkit-transition: .3s opacity;
+				-webkit-transform: translate3d(0,0,0);
+				transform: translate3d(0,0,0);
+				z-index: 11;
+				padding-left: 0.75rem;
+				font-size: 0.75rem;
+			}
+			.text span {
+				padding-right: 1rem;
+			}
+			.text .b2 {
+			}
+			.text .b3 {
+				color: #F95555;
+				font-weight: bold;
+				padding-right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="t" tapmode onclick="c()"></div>
+		<div class="f">
+			<script id="sx-list" type="text/x-dot-template">
+				<div class="swiper-wrapper">
+				{{ for(var i=0,len=it.length; i < len; i++) { }}
+				<div class="swiper-slide" tapmode onclick="liwu_money(this)" data-data='{{= JSON.stringify(it[i]) }}'>
+				<img src="{{= fx_cdn + it[i].img }}" />
+				<p>{{= it[i].title}}</p>
+				<span>{{= it[i].money + _config.zhibo.liwu_title}}</span>
+				</div>
+				{{ } }}
+				</div>
+			</script>
+			<div class="swiper-container" id="sx-view"></div>
+			<!-- Add Pagination -->
+			<div class="swiper-pagination"></div>
+			<div class="text" tapmode onclick="chongzhi()">
+				<!--<span class="b1">西瓜币：<b>0</b></span>-->
+				<span class="b2"></span>
+				<span class="b3">充值</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/swiper.min.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+ 			a()
+			api.parseTapmode();
+		}
+		function a() {
+		//	console.log(JSON.stringify(api.pageParam))
+			var ret = _config.liwu
+			$('.text .b2').html(_config.zhibo.liwu_title + "：<b>" + (_user.zhibo_zuan ? _user.zhibo_zuan : 0) + "</b>")
+			var evalData = doT.template($api.html($api.byId('sx-list')));
+			$api.html($api.byId('sx-view'), evalData(ret));
+			api.parseTapmode();
+			//console.log(evalData(ret))
+			var swiper = new Swiper('.swiper-container', {
+				slidesPerView : 4,
+				spaceBetween : 15,
+				slidesPerGroup : 4,
+				slidesPerColumn : 2,
+				loopFillGroupWithBlank : true,
+				pagination : {
+					el : '.swiper-pagination',
+					clickable : true,
+				},
+			});
+		}
+
+		function c() {
+			 
+			api.closeFrame();
+		}
+
+		function chongzhi() {
+			api.setFullScreen({
+				fullScreen : false
+			});
+			if (!$api.getStorage('user')) {
+				return _login();
+			}
+			_url({
+				url : 'zhibo/view_frm_chongzhi',
+				title : '充值'
+			})
+		}
+		// 发送礼物
+		function liwu_money(_this){
+			var data = $(_this).data('data');
+			if (!$api.getStorage('user')) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+				return _login();
+			}
+			if(!api.pageParam['ret']['role'] == 2){
+				return _msg('不能给自己送礼物1');
+			}
+			// 检测钻石是否足够
+	        if(!$api.getStorage('user').id || $api.getStorage('user').zhibo_zuan < data.money){
+	            return _msg('钻石不足');
+	        }
+	        if($api.getStorage('user').id == api.pageParam['uid']){
+	        	return _msg('不能给自己送礼物2');
+	        }
+	        api.execScript({
+	        	frameName:'zhibo/view_frm_1',
+				script: 'liwu_ajax(\''+JSON.stringify(data)+'\');'
+			});
+			return;
+			return c();
+			_ajax('api/zhibo/liwu_money',function(ret,err){
+				if(ret){
+					if(ret.ret){
+						_msg('赠送成功');
+						_user.zhibo_zuan = _user.zhibo_zuan - ret.money;
+						$('.text .b2').html(_config.zhibo.liwu_title + "：<b>" + (_user.zhibo_zuan ? _user.zhibo_zuan : 0) + "</b>")
+						api.execScript({
+						    script: '_userInfo();'
+						});
+						c();
+					} 
+					console.log(JSON.stringify(ret))
+				}else{
+					_alert(JSON.stringify(err))
+				}
+			},{id:id,uid_zhu:api.pageParam['uid']})
+		}
+	</script>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	</head>
+	<body>
+		 
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/doT.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var playModule;
+		var sx
+		apiready = function() {
+		 
+			sx = {"source":"知足常乐207755035","title":"笑死我了","click":1,"weitoutiao":0,"image":"http://img.1424445608.com/05d99d391d85712bddc674b92aa51f6f.jpg?imageView2/1/w/"+api.winWidth+"/h/"+api.winHeight+"/format/jpg","create_time":"12-30 16:33","url":"/index.php/a/2402.html","mychannel":4,"images":null,"zan":0,"video":"http://img.1424445608.com/ff76972c97be222655bbb84990178486.mp4","qiniu_video_type":0,"id":2402,"user":{"img":"http://img.1424445608.com/62da3c13f3eef2774e965aedbd60f72a.jpg?imageView2/1/w/100/h/100/format/jpg","username":"知足常乐207755035"},"uid":15730,"update_time":"1546158836","videodate":null,"pingNum":0,"content":"","description":""}
+			playModule = api.require('playModule');
+			videoUrl();
+	
+		}
+
+		// 播放视频
+		function videoUrl(){			
+			playModule.play({
+				rect : {
+					x : 0,
+					y : 0,
+					w : api.winWidth,
+					h : api.winHeight
+				},
+				url : fx_gurl + 'mp4.mp4',
+				defaultBtn : false, //	设置本次播放是否显示默认自带的播放控制按钮
+				isTopView : false, //	是否显示顶部标题栏
+				title : '', //	不填时标题默认显示url地址
+				enableFull : false, //	本次播放视频是否全屏播放，当为true时将直接全屏播放视频，x,y,w,h,fixedOn,fixed值不会生效。
+				isFullBtn : false, // 	小窗口是否显示进入全屏按钮
+				isBackBtn : false, // 	小窗口是否显示返回按钮
+				scalingMode : api.systemType == 'android' ? 4 : 3, // 	1:无缩放, 2:适应大小模式, 3:充满可视范围，可能会被裁剪, 4:缩放到充满视图
+				fullscreenMode : 'PORTRAIT', //	设置全屏按钮控制全屏显示模式是横屏还是竖屏 竖屏:PORTRAIT ; 横屏:LANDSCAPE
+				isShowProcessView : false, //	是否显示进度条 (显示:true ; 不显示:false)【备注:直播流自动默认为false】
+				isShowTimeLable : false, //	是否显示播放时间 (显示:true ; 不显示:false)
+				isOpenGesture : false, //	全屏时是否开启手势控制音量，亮度和进度 （开启：true；不开启：false）
+				isSmallOpenGesture : false,	//	窗口播放时是否开启手势控制音量，亮度和进度 （开启：true；不开启：false）
+			//	isLoop:true,
+			}, function(ret, err) {
+				if (ret.status) {
+					win();
+				}
+			});
+		}
+		// 打开新窗口
+		function win() {
+			api.openFrame({
+				name : 'svideo',
+				url : html_win + 'svideo.html',
+				bounces : false,
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto',
+				},
+				bgColor : 'rgba(0,0,0,0)',
+				animation:{
+					type:"push",                //动画类型（详见动画类型常量）
+				    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+				    duration:300    
+				},
+			})
+		}
+	</script>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/suxiang-zhibo.css" />
+	</head>
+	<body>
+		<script id="fx-list" type="text/x-dot-template">
+			{{ for(var i=0,len=it.data.length; i < len; i++) { }}
+			<div class="aui-card-list" tapmode onclick="_zurl_data(this)" data-data='{{= JSON.stringify(it.data[i]) }}'>
+				<div class="aui-card-list-header aui-card-list-user">
+					<div class="aui-card-list-user-avatar">
+						<img id="ffxiangImgCache" ffxiang-src="{{= fx_cdn + it.data[i].user.img }}?imageView2/1/w/50/h/50" src="../../image/touxiang.png" tapmode onclick="_url({uid:{{= it.data[i].uid }},qian:0,fan:1},'u_win')" class="aui-img-round">
+					</div>
+					<div class="aui-card-list-user-name">
+						{{= it.data[i].user.username }}
+					</div>
+					<em><img src="../../image/zhibo/right.png" /></em>
+				</div>
+				<div class="aui-card-list-content-padded">
+					<div class="text">
+						<p><span>{{= it.data[i].streamStatus == 1 ? '直播中' : '未直播'}}</span>{{= it.data[i].roomName }}</p>
+					</div>
+					<img src="../../image/load-img.png" id="ffxiangImgCache" ffxiang-src="{{= fx_cdn  + it.data[i].img_l }}?imageView2/1/w/300/h/200" />
+				</div>
+			</div>
+			{{ } }}
+		</script>
+		<section class="aui-content sx-zhibo" id="fx-view"></section>
+	</body>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			// 下拉刷新
+			_shangla(function(ret,err){
+				_lists('api/article/zhibo',1,1);
+			})
+	    	// 监听滚动
+	    	api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : threshold //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				if(heigutgao==1){	// heigutgao=1开启执行 0停止执行   防止连续滚动，等加载数据之后在进行滚动。 
+					pagenum+=1
+					lists('api/article/zhibo',pagenum);
+				}
+			});
+		}
+		function _zurl_data(_this){
+			if (!$api.getStorage('user')) {
+				return _login();
+			}
+			var data = $(_this).data('data');
+			api.setFullScreen({
+				fullScreen : true
+			});
+			_zurl(data)
+		}
+	</script>
+</html>

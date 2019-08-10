@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<style>
+			html,body {
+				background: #fff !important;
+			}
+			body {
+				line-height: 1.5;
+				font-size: 0.8rem;
+				color: #212121;
+				 
+				outline: 0;
+			}
+			.a {
+				height: 100px;
+				overflow-x: hidden;
+				overflow-y: scroll;
+				-webkit-overflow-scrolling: touch;
+			}
+			.gun:hover{
+				background: #ff0f00
+			}
+			.gun{
+				background:#f00;
+				color: #fff;
+				display: inline-block;
+				width: 100px;
+				height: 50px;
+				line-height: 50px;
+				margin-top: 30px;
+				text-align: center;
+				border-radius: 50px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="a" id="a">
+			<div class="text">
+				内容内容内容内容内容1
+			</div>
+			<div class="text">
+				内容内容内容内容内容2
+			</div>
+			<div class="text">
+				内容内容内容内容内容3
+			</div>
+			<div class="text">
+				内容内容内容内容内容4
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容6
+			</div>
+			<div class="text">
+				内容内容内容内容内容7
+			</div>
+			<div class="text">
+				内容内容内容内容内容8
+			</div>
+			<div class="text">
+				内容内容内容内容内容9
+			</div>
+			<div class="text">
+				内容内容内容内容内容0
+			</div>
+			<div class="text">
+				内容内容内容内容内容1
+			</div>
+			<div class="text">
+				内容内容内容内容内容2
+			</div>
+			<div class="text">
+				内容内容内容内容内容3
+			</div>
+			<div class="text">
+				内容内容内容内容内容4
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容6
+			</div>
+			<div class="text">
+				内容内容内容内容内容7
+			</div>
+			<div class="text">
+				内容内容内容内容内容8
+			</div>
+			<div class="text">
+				内容内容内容内容内容9
+			</div>
+			<div class="text">
+				内容内容内容内容内容0
+			</div>
+			<div class="text">
+				内容内容内容内容内容1
+			</div>
+			<div class="text">
+				内容内容内容内容内容2
+			</div>
+			<div class="text">
+				内容内容内容内容内容3
+			</div>
+			<div class="text">
+				内容内容内容内容内容4
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容5
+			</div>
+			<div class="text">
+				内容内容内容内容内容6
+			</div>
+			<div class="text">
+				内容内容内容内容内容7
+			</div>
+			<div class="text">
+				内容内容内容内容内容8
+			</div>
+			<div class="text">
+				内容内容内容内容内容9
+			</div>
+			<div class="text">
+				内容内容内容内容内容0
+			</div>
+		</div>
+		<div class="gun">点我滚动试试</div>
+	</body>
+	<script type="text/javascript" src="https://www.suxiangw.com/public/index/js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.gun').click(function(){
+				var divObj = document.getElementById("a");
+			 	console.log(divObj)
+				$(".a").animate({scrollTop:divObj.scrollHeight},300);//1000是ms,也可以用slow代替
+				console.log(2)
+			})
+		})
+	</script>
+</html>

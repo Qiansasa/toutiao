@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="A6019184532119" version="0.0.1">
+  <name>每天头条</name>
+  <description></description>
+  <author email="1424445608@qq.com" href="http://www.ffxiang.com">每天头条</author>
+  <content src="www_suxiangw_com.html"/>
+  <preference name="pageBounce" value="false"/>
+  <preference name="appBackground" value="rgba(0,0,0,0)"/>
+  <preference name="windowBackground" value="rgba(0,0,0,0)"/>
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0)"/>
+  <preference name="hScrollBarEnabled" value="false"/>
+  <preference name="vScrollBarEnabled" value="false"/>
+  <preference name="autoLaunch" value="true"/>
+  <preference name="fullScreen" value="false"/>
+  <preference name="autoUpdate" value="true"/>
+  <preference name="smartUpdate" value="true"/>
+  <preference name="debug" value="false"/>
+  <preference name="statusBarAppearance" value="true"/>
+  <preference name="softInputMode" value="auto"/>
+  <preference name="allowKeyboardExtension" value="true" />
+  <permission name="readPhoneState"/>
+  <permission name="camera"/>
+  <permission name="record"/>
+  <permission name="location"/>
+  <permission name="fileSystem"/>
+  <permission name="internet"/>
+  <permission name="bootCompleted"/>
+  <permission name="hardware"/>
+  <preference name="appCertificateVerify" value="false" />
+  <feature name="wx">
+    <param name="urlScheme" value="wx416eef2c13eb289a"/>
+    <param name="apiKey" value="wx416eef2c13eb289a"/>
+    <param name="apiSecret" value="63f1ce80f01cf173f7c04f06e0c2c5d6"/>
+  </feature>
+  <feature name="QQPlus">
+  <param name="urlScheme" value="tencent101750157" />
+  <param name="apiKey" value="101750157" />
+  </feature>
+  <feature name="weibo">
+    <param name="urlScheme" value="wb2378207244" />
+    <param name="apiKey" value="2378207244" />
+    <param name="registUrl" value="http://news.ffxiang.cn" />
+  </feature>
+
+  <feature name="baiduLocation">
+    <param name="apiKey" value="OhK2w6K552m4ZFNLUGl4B0cM5a4i4BpI" />
+  </feature>
+
+
+   <feature name="rongCloud2">
+    <param name="appKey" value="x18ywvqfxc28c" />
+	</feature>
+
+
+  <intent-filter>
+    <action name="android.intent.action.VIEW"/>
+    <category name="android.intent.category.DEFAULT"/>
+    <data scheme="rong" host="io.rong.fast" pathPrefix="/conversation/"/>
+</intent-filter>
+
+<intent-filter>
+   <action name="android.intent.action.VIEW" />
+   <category name="android.intent.category.DEFAULT" />
+   <data host="com.ybjk.app" path="/conversationlist" scheme="rong" />
+</intent-filter>
+
+
+<intent-filter>
+    <action name="android.intent.action.VIEW" />
+    <category name="android.intent.category.DEFAULT" />
+    <data host="com.ybjk.app" pathPrefix="/push_message" scheme="rong" />
+</intent-filter>
+ <feature name="gotyeLiveCore">
+    <param name="appKey" value="ef1e0d71f6d6448fb4f12f5fe047d24b"/>
+    <param name="accessSecret" value="098741949bef46559a74ccfd45769e3b"/>
+  </feature>
+
+  <feature name="ajpush">
+	<param name="app_key" value="ec9c6b8d512639c6a6ade949" />
+	<param name="channel" value="1" />
+  </feature>
+
+</widget>

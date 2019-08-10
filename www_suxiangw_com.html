@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<style>
+			html{
+				font-family: "Helvetica Neue", Helvetica, sans-serif;
+				font-size: 20px;
+			}
+			html,body {
+				-webkit-touch-callout:none;
+				-webkit-text-size-adjust:none;
+				-webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+				-webkit-user-select:none;
+				width: 100%;
+				margin:0;
+				border:0;
+				padding:0;
+				font-style:normal;
+			}
+			body {
+				line-height: 1.5;
+				font-size: 0.8rem;
+				color: #212121;
+				background: #fff !important;
+				outline: 0;
+			}
+			.a{
+				padding-top: 50%;
+				margin: 0 auto;
+				text-align: center;
+			}
+			.a img{
+				margin: 0 auto;
+				text-align: center;
+				width: 7.8rem;
+			}
+			.a p{
+				text-align: center;
+				font-size: 0.85rem;
+				padding-top: 0.55rem;
+			 
+			}
+			 
+		</style>
+	</head>
+	<body>
+ 
+		<div class="a" >
+			<img src="html/image/2019/loading.gif" />
+			<p>正在初始化...</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="html/script/api.js"></script>
+	<script type="text/javascript" src="html/script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var gotyeLiveCore,publisher,ajpush
+		apiready = function() {		
+		 	config()
+			api.parseTapmode();
+			// 判断返回键
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) { 
+				api.execScript({
+					frameName : 'ffxiang_win',
+					script : 'keyback()'
+				});
+			});
+			ajpush = api.require('ajpush');
+			if(api.systemType == 'android'){
+				ajpush.init(function(ret) {
+					//alert("极光初始化："+JSON.stringify(ret))
+				    if (ret && ret.status){
+				        //success
+				    }
+				});
+			}
+			ajpush.setListener(
+			    function(ret) {
+					alert("极光推送监听："+JSON.stringify(ret))
+			    }
+			);
+			// 安卓监听通知
+			api.addEventListener({
+			    name: 'appintent'
+			}, function(ret, err) {
+				//alert("appintent推送通知："+JSON.stringify(ret))
+			    if(ret && ret.appParam.ajpush){
+			    	var a = ret.appParam.ajpush.extra;
+			    	aurl(a)
+			    }
+			})
+			// 苹果监听通知
+			api.addEventListener({
+			    name: 'noticeclicked'
+			}, function(ret, err) {
+			//    alert("noticeclicked推送通知："+JSON.stringify(ret))
+			    if(ret && ret.value){
+			    	var a = ret.value.extra;
+			    	aurl(a)
+			    }
+			});
+			//监听应用进入后台，通知jpush暂停事件
+			api.addEventListener({
+				name:'pause'
+			}, function(ret,err) {
+		        onPause();
+		    })
+		    //监听应用恢复到前台，通知jpush恢复事件  
+		    api.addEventListener({
+		    	name:'resume'
+		    }, function(ret,err) {
+		        onResume();
+		    })
+		}
+		// 监听通知内容跳转地址
+		function aurl(a){
+	    	if(a.mychannel == 1){
+	    		_url({id:a.id,qian:1,fan:0},'view_win')
+	    	}else if(a.mychannel == 2){
+	    		_url({id:a.id,qian:1,fan:0},'photo_browser');
+	    	}else if(a.mychannel == 3){
+	    		_url({id:a.id,videoUrl:a.video,title:a.title,qian:0,fan:0},'videoView_win');
+	    	}
+		}
+		//统计-app恢复
+		function onResume(){
+			if(api.systemType == 'android'){
+		   		ajpush.onResume();
+		    }
+		}
+		
+		//统计-app暂停
+		function onPause(){
+			if(api.systemType == 'android'){
+		    	ajpush.onPause();
+		    }
+		}
+		// APP推送绑定用户ID别名
+		function bindAliasAndTags(){
+			if(!$api.getStorage('user')){
+				return;
+			}
+			ajpush.getRegistrationId(function(ret) {
+			    _ajax('api/member/getRegistrationId',function(ret,err){
+			    	if(ret){
+			    	//	alert(JSON.stringify(ret))
+			    	}else{
+			    	//	alert(JSON.stringify(err))
+			    	}
+			    },{jpush_id:ret.id})
+			});
+
+
+//			var param = {alias:$api.getStorage('user').id};
+//			ajpush.bindAliasAndTags(param,function(ret) {
+//				alert("bindAliasAndTags绑定别名："+JSON.stringify(ret))
+//			});
+		}
+		 
+		// 获取配置分类
+		function config(){
+			_ajax('api/article/typeid/field/id,title',function(ret,err){
+				if(ret){
+					$api.setStorage('typeid', ret);
+					viewtypeid();
+					openFrame('ffxiang_win');
+					// api.closeFrame();
+				}else{
+					setTimeout(function(){
+						config()
+					},1000)
+				}
+			})
+		} 
+		 
+		function openFrame(url) {
+			// 解析属性	消除点击300S 延时问题 tapmode
+			api.openFrame({
+				name : 'ffxiang_win',
+				url : html_win+url+'.html',
+				bounces : false,
+				reload : true,
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto'
+				},
+			})
+			
+		}
+		// 读取视频分类存储本都
+		function viewtypeid(){
+			_ajax('api/article/videoTypeid', function(ret, err) {
+				//console.log(JSON.stringify(ret))
+				if (ret) {
+					$api.setStorage('videoTypeid', ret);
+				}
+			})
+		}
+		 
+	</script>
+</html>

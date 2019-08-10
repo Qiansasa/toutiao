@@ -1,0 +1,344 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+			header{
+	 			background: url('../image/2019/redian.png') no-repeat center center;
+	 			background-size:cover;
+	 		}
+	 		header div.a1{
+	 			text-align: center;
+			    display: flex;
+			    justify-content: center;
+           		align-items: center;
+           		padding: 50px 0;
+	 		}
+	 		.a2 img{
+	 			width: 150px;
+	 			text-align: center;
+	 			margin: 0 auto;
+	 		}
+	 		header p{
+	 			text-align: center;
+	 			color: #fff;
+	 			font-size: 0.65rem;
+	 			padding-top: 0.75rem;
+	 			letter-spacing:5px;
+	 		 	 
+	 		}
+	 		.aui-timeline .aui-font-size-20{
+	 			color: #000;
+	 		}
+	 		.aui-timeline .aui-list-item-title{
+	 			color: #777;
+	 		}
+	 		.aui-timeline .aui-info .aui-font-size-12{
+	 			color: #999;
+	 		}
+	 		.aui-media-list-item-inner .aui-list-item-inner{
+	 			width: 70%;
+	 			margin-right: 0.5rem;
+	 		}
+	 		.aui-media-list-item-inner .aui-list-item-media{
+	 			width: 30%;
+	 		}
+	 		.aui-media-list-item-inner .aui-list-item-text{
+	 			height: 34px;
+	 		}
+	 		.aui-timeline .aui-timeline-item-label-icon{
+	 			width: 0.5rem;
+	 			height: 0.5rem;
+	 			left: 1.65rem;
+	 			background-color:#fff;
+	 			border: 3px solid #FB6962;
+	 			margin-top: 0.35rem;
+	 		}
+	 		.aui-timeline:before{
+	 			border-left: 1px dashed #ccc;
+	 			background: none
+	 		}
+	 		.aui-timeline .aui-timeline-item{
+	 			margin-bottom: 1.75rem;
+	 		}
+	 		.aui-timeline .aui-timeline-item-header{
+	 			margin-left: 2.6rem;
+	 			background: none;
+	 			color: #000;
+	 			font-size: 0.85rem;
+	 		}
+	 		.aui-timeline .aui-timeline-item-inner{
+	 			margin-left: 3rem;
+	 		}
+	 		.aui-list-item-title,.aui-info-item span{
+	 			font-size: 0.7rem !important;
+	 		}
+	 		.aui-info-item {
+	 			padding-top: 0.35rem !important;
+	 		}
+	 		.time{
+	 			margin-bottom: 0.35rem;
+	 		}
+		</style>
+	</head>
+	<body>
+		<header class="" id="fx-header">
+			<div class="a1">
+				<div class="a2">
+					<img src="../image/2019/b2b.png" />
+					<p>重磅新闻实际更新</p>
+				</div>
+			</div>
+		</header>
+		<section class="aui-content">
+	        <div class="aui-timeline">
+	            <div class="aui-timeline-item-header"></div>
+	            <script id="fx-list" type="text/x-dot-template"> 
+	            {{ for(var i=0,len=it.data.length; i < len; i++) { }}
+	            {{? it.data[i].mychannel != 99}}
+	            {{? it.data[i].image && it.data[i].description}}
+	            <div class="aui-timeline-item" tapmode onclick="_url({id:{{= it.data[i].id }},videoUrl:'{{= it.data[i].video }}',title:'{{= it.data[i].title }}',qian:1,fan:0},'{{= it.data[i].mychannel == 3 ? 'videoView_win' : it.data[i].mychannel == 2 ? 'photo_browser' : 'view_win'}}')" >
+	                <div class="aui-timeline-item-label-icon"></div>
+	                <div class="aui-timeline-item-inner">
+	                    <div class="aui-card-list">
+	                        <div class=" ">
+	                        <div class="time">{{= formatDate(it.data[i].update_time)}}</div>
+							<div class="aui-ellipsis-2 aui-margin-b-5 aui-font-size-20">{{= it.data[i].dtitle ? it.data[i].dtitle : it.data[i].title}}</div>
+	                           <div class="aui-media-list-item-inner">
+				                    <div class="aui-list-item-inner">
+				                        <div class="aui-list-item-text">
+				                            <div class="aui-list-item-title aui-font-size-12 aui-ellipsis-2">{{= it.data[i].description}}</div>
+				                        </div>
+				                        <div class="aui-info aui-padded-b-0">
+				                            <div class="aui-info-item aui-font-size-12">
+				                                <img src="{{= it.data[i].user.img}}?imageView2/1/w/50/h/50/format/jpg" style="width:1rem" class="aui-img-round" />
+				                                <span class="aui-margin-l-5">{{= it.data[i].source}}</span>
+				                                <span class="aui-margin-l-5">{{= it.data[i].pingNum}}条评论</span>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="aui-list-item-media">
+				                        <img src="{{= it.data[i].image}}?imageView2/1/w/87/h/64/format/jpg">
+				                    </div>
+				                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            {{?? it.data[i].image && !it.data[i].description}}
+	            <div class="aui-timeline-item" tapmode onclick="_url({id:{{= it.data[i].id }},videoUrl:'{{= it.data[i].video }}',title:'{{= it.data[i].title }}',qian:1,fan:0},'{{= it.data[i].mychannel == 3 ? 'videoView_win' : it.data[i].mychannel == 2 ? 'photo_browser' : 'view_win'}}')" >
+	                <div class="aui-timeline-item-label-icon"></div>
+	                <div class="aui-timeline-item-inner">
+	                    <div class="aui-card-list">
+	                        <div class=" ">
+	                        	<div class="time">{{= formatDate(it.data[i].update_time)}}</div>
+ 	                           <div class="aui-media-list-item-inner">
+				                    <div class="aui-list-item-inner">
+				                        <div class="aui-list-item-text" style=" height: auto;">
+				                            <div class="aui-list-item-title aui-font-size-20 aui-ellipsis-2">{{= it.data[i].dtitle ? it.data[i].dtitle : it.data[i].title}}</div>
+				                        </div>
+				                        <div class="aui-info aui-padded-b-0">
+				                            <div class="aui-info-item aui-font-size-12">
+				                                <img src="{{= it.data[i].user.img}}?imageView2/1/w/50/h/50/format/jpg" style="width:1rem" class="aui-img-round" />
+				                                <span class="aui-margin-l-5">{{= it.data[i].source}}</span>
+				                                <span class="aui-margin-l-5">{{= it.data[i].pingNum}}条评论</span>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="aui-list-item-media">
+				                        <img src="{{= it.data[i].image}}?imageView2/1/w/87/h/64/format/jpg">
+				                    </div>
+				                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            {{?? !it.data[i].image && it.data[i].description}}
+	            <div class="aui-timeline-item" tapmode onclick="_url({id:{{= it.data[i].id }},videoUrl:'{{= it.data[i].video }}',title:'{{= it.data[i].title }}',qian:1,fan:0},'{{= it.data[i].mychannel == 3 ? 'videoView_win' : it.data[i].mychannel == 2 ? 'photo_browser' : 'view_win'}}')" >
+	                <div class="aui-timeline-item-label-icon"></div>
+	                <div class="aui-timeline-item-inner">
+	                    <div class="aui-card-list">
+	                        <div class=" ">
+	                        	<div class="time">{{= formatDate(it.data[i].update_time)}}</div>
+								<div class="aui-ellipsis-2 aui-margin-b-5 aui-font-size-20">{{= it.data[i].dtitle ? it.data[i].dtitle : it.data[i].title}}</div>
+	                           <div class="aui-media-list-item-inner">
+				                    <div class="aui-list-item-inner" style="width: 100%;">
+				                        <div class="aui-list-item-text">
+				                            <div class="aui-list-item-title aui-font-size-12 aui-ellipsis-2">{{= it.data[i].description}}</div>
+				                        </div>
+				                        <div class="aui-info aui-padded-b-0">
+				                            <div class="aui-info-item aui-font-size-12">
+				                                <img src="{{= it.data[i].user.img}}?imageView2/1/w/50/h/50/format/jpg" style="width:1rem" class="aui-img-round" />
+				                                <span class="aui-margin-l-5">{{= it.data[i].source}}</span>
+				                                <span class="aui-margin-l-5">{{= it.data[i].pingNum}}条评论</span>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            {{??}}
+	            <div class="aui-timeline-item" tapmode onclick="_url({id:{{= it.data[i].id }},videoUrl:'{{= it.data[i].video }}',title:'{{= it.data[i].title }}',qian:1,fan:0},'{{= it.data[i].mychannel == 3 ? 'videoView_win' : it.data[i].mychannel == 2 ? 'photo_browser' : 'view_win'}}')" >
+	                <div class="aui-timeline-item-label-icon"></div>
+	                <div class="aui-timeline-item-inner">
+	                    <div class="aui-card-list">
+	                        <div class=" ">
+	                        	<div class="time">{{= formatDate(it.data[i].update_time)}}</div>
+								<div class="aui-ellipsis-2 aui-margin-b-5 aui-font-size-20">{{= it.data[i].dtitle ? it.data[i].dtitle : it.data[i].title}}</div>
+	                           <div class="aui-media-list-item-inner">
+				                    <div class="aui-list-item-inner">
+				                      
+				                        <div class="aui-info aui-padded-b-0">
+				                            <div class="aui-info-item aui-font-size-12">
+				                                <img src="{{= it.data[i].user.img}}?imageView2/1/w/50/h/50/format/jpg" style="width:1rem" class="aui-img-round" />
+				                                <span class="aui-margin-l-5">{{= it.data[i].source}}</span>
+				                                <span class="aui-margin-l-5">{{= it.data[i].pingNum}}条评论</span>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            {{?}}
+	            {{?}}
+	           	{{ } }}
+				</script>
+	           <div id="fx-view"></div>
+	        </div>
+	
+	    </section>
+	</body>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/doT.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var content = $api.byId('fx-header');
+		var gradualChange = $api.offset(content).h / 2;
+		var _h = 0;
+		var timestamp
+		apiready = function() {
+			var date = new Date();
+			var weekday = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+			$('.aui-timeline-item-header').text((date.getMonth() + 1) + '.'+date.getDate()+" "+weekday[date.getDay()]);
+			timestamp = Date.parse(new Date());
+			timestamp=timestamp/1000
+			// 下拉刷新
+			_lists('api/article/lists/flags/2/date/'+timestamp, 1, 1);
+			// 监听滚动
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : threshold //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				if (heigutgao == 1) {// heigutgao=1开启执行 0停止执行   防止连续滚动，等加载数据之后在进行滚动。
+					pagenum += 1
+					_lists('api/article/lists/flags/2/date/'+timestamp, pagenum);
+					// 当数据写入成功  把 heigutgao 设置1
+				}
+			});
+			$api.fixStatusBar(content);
+			api.openFrame({
+	            name: 'redian_win',
+	            url: html_win + 'redian_win.html',
+	            bounces: false,
+	            vScrollBarEnabled: false,
+	            hScrollBarEnabled: false,
+	            bgColor: 'rgb(0,0,0,0)',
+	            rect: {
+	                x: 0,
+	                y: 0,
+	                w: 'auto',
+	                h: 0
+	            },
+	            hidden:false
+	        });
+			var k = 0;
+			window.onscroll = function(e) {
+	            var scrollTop = document.body.scrollTop;   
+				$api.css($api.dom('.a2 p'),'opacity:'+(1-(scrollTop / (gradualChange + _h))));
+//		        var px = 150 - scrollTop ;
+//		        if(px > gradualChange && scrollTop < px){
+//		        	$api.css($api.dom('.a2 img'),'width:'+px+'px');
+//		        }
+	            if (scrollTop > _h) {
+	            	scrollTop = scrollTop - _h     
+	            }else{
+	            	scrollTop = 0;
+	            }
+	            api.execScript({
+					frameName: 'redian_win',
+					script: 'show('+(scrollTop / gradualChange )+')'
+				});
+	        };
+		}
+		function h(a){
+			_h = a;
+			gradualChange = gradualChange - _h
+			api.setFrameAttr({
+			    name: 'redian_win',
+			    rect: {
+	                x: 0,
+	                y: 0,
+	                w: 'auto',
+	                h: a
+	            },
+			});
+		}
+		function formatDate(a) { 
+			var now=new Date(a*1000); 
+//		     var year=now.getFullYear(); 
+		     var month=now.getMonth()+1; 
+		     var date=now.getDate(); 
+		     var hour=now.getHours(); 
+		     var minute=now.getMinutes(); 
+//		     var second=now.getSeconds(); 
+			if(month < 10){
+				month = "0"+month;
+			}
+			 
+			 
+			if(hour < 10){
+				hour = "0"+hour;
+			}
+			if(minute < 10){
+				minute = "0"+minute;
+			}
+			
+			var day2 = new Date();
+ 			var j_d = day2.getDate();
+ 			 
+ 			 
+ 			if(j_d == date){
+				return hour+":"+minute;
+			}
+			
+			// 昨天
+ 			var j_d_1 = day2.getDate()-1;
+			if(j_d_1 == date){
+				return "昨天 "+hour+":"+minute;
+			}
+			// 昨天
+ 			var j_d_1 = day2.getDate()-2;
+			if(j_d_1 == date){
+				return "前天 "+hour+":"+minute;
+			}
+ 			
+ 			if(date < 10){
+				date = "0"+date;
+			}
+	 
+		    return month+"-"+date+" "+hour+":"+minute;
+		} 
+	 
+	</script>
+</html>

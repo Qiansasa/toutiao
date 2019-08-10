@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style>
+			.aui-grid .aui-row{
+				margin:0;
+				margin-bottom: 1.1rem;
+			}
+			.aui-grid .aui-grid-label{
+				border: 1px solid #e8e8e8;
+			 	padding: 0.55rem 0;
+			 	color: #000;
+			 	font-size: 0.7rem;
+			 	margin-top: 0px;
+			}
+			.aui-grid [class*=aui-col-]{
+				padding: 0;
+				margin-left: 1.4rem;
+				width: 23%;
+				margin-top: 1rem;
+			}
+			.aui-grid h3{
+				background: #e8e8e8;
+				padding: 0.45rem 0.75rem;
+				font-size: 0.55rem;
+			}
+			.aui-col-xs-4 input{
+				border:1px solid #e8e8e8;
+			
+				text-align: center;
+				font-size: 0.7rem
+			}
+			.aui-list-item-label-icon img{
+				width:1.3rem;
+			}
+			.aui-list-item-inner{
+				font-size: 0.7rem;
+			}
+			.asdasd{
+				border: 1px solid #FF2D4B !important
+			}
+			.aui-grid .aui-iconfont{
+				color: #FF2D4B;
+				position: absolute;
+				top: 0.5rem;
+				right:0.75rem;
+				font-size: 0.55rem;
+				font-weight: bold;
+				border: 1px solid #FF2D4B;
+				border-radius: 50%;
+				width: 1.1rem !important;
+				height: 1.1rem !important;
+				line-height: 1.1rem !important;
+				padding-left: 0.2rem;
+			}
+			.aui-col-xs-4 em{
+				position: absolute;
+				font-weight: bold;
+				background: #ccc
+			}
+			.asdasd em{
+				background: #FF2D4B !important
+			}
+			#chongzhi_img{
+				width: 100%;
+				height: 100%;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<img id="chongzhi_img" src="" />
+		<section class="aui-grid">
+			<h3>选择充值金额 </h3>
+			<div class="aui-row">
+				 
+				<div class="aui-col-xs-4 ">
+					<div class="aui-grid-label asdasd" data-money='50' tapmode onclick="m(this)">
+						50
+					</div>
+				</div>
+				<div class="aui-col-xs-4 ">
+					<div class="aui-grid-label" data-money='100' tapmode onclick="m(this)">
+						100
+					</div>
+				</div>
+				<div class="aui-col-xs-4 ">
+					<div class="aui-grid-label" data-money='300' tapmode onclick="m(this)">
+						300
+					</div>
+				</div>
+				<div class="aui-col-xs-4">
+					<div class="aui-grid-label" data-money='500' tapmode onclick="m(this)">
+						500
+					</div>
+				</div>
+				<div class="aui-col-xs-4">
+					<div class="aui-grid-label" data-money='1000' tapmode onclick="m(this)">
+						1000
+					</div>
+				</div>
+				<div class="aui-col-xs-4" id="inputs">
+					<input id="input" tapmode onclick="i(this)"  type="tel" placeholder="其他金额" value="">
+				</div>
+				 
+			</div>
+			<h3>请选择支付方式</h3>
+			<div class="aui-content">
+		        <script id="sx-list" type="text/x-dot-template">
+					{{ for(var i=0,len=it.length; i < len; i++) { }}
+		            <li class="aui-list-item ems" data-pay="{{= it[i].qudao }}" tapmode onclick="x(this)">
+		                <div class="aui-list-item-label-icon">
+		                    <img src="{{= fx_cdn + it[i].img }}" />
+		                </div>
+		                <div class="aui-list-item-inner">
+		                	{{= it[i].title }}
+		                </div>
+		                {{? i==0}}
+		                <em class="aui-iconfont aui-icon-correct"></em>
+		                {{?}}
+		            </li>
+		            {{ } }}
+				</script>
+		        <ul class="aui-list aui-list-in" id="sx-view">
+		        	<div id="jiazai" style="padding: 2rem"><img src="../../image/loading_more.gif" /></div>
+		        </ul>
+		    </div>
+		    <div  class="aui-padded-15 aui-border-t" style="overflow: hidden;">
+				<span class="aui-pull-left aui-font-size-14">预计获得</span>
+				<span class="aui-pull-right" style="color:#FF2D4B " id="yuji">0</span>
+			</div>
+		</section>
+		<div style="width: 90%;margin: 0 auto;margin-top: 1rem;"><div class="aui-btn-block aui-btn aui-btn-info" tapmode onclick="data()">确认充值</div></div>
+	</body>
+<!--	<script type="text/javascript" src="../../script/fastclick.js"></script>-->
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var zengbi,yuji=0,_app=''
+		apiready = function() {
+		//	FastClick.attach(document.body)
+			$('#yuji').html('0'+(_app ? '元' : _config.zhibo.liwu_title))
+			zengbi=_config.config.pay_zb/100
+			beecloud = api.require('beecloud');
+			payList()
+			var yujiMoney=$('.asdasd').data('money')
+			if(zengbi){
+				$(".aui-grid-label").each(function(){
+					var text=$(this).text();
+					text=parseInt(text*zengbi);
+					if(text){
+						$(this).append('<em class="aui-badge">+'+text+'</em>')
+					}
+				});
+				$('#inputs').append('<em class="aui-badge">+0</em>')
+				yuji=parseInt(yujiMoney+yujiMoney*zengbi)+(_app ? '元' : _config.zhibo.liwu_title);
+			}else{
+				yuji=parseInt(yujiMoney)+(_app ? '元' : _config.zhibo.liwu_title);
+			}
+			 
+			$('#yuji').text(yuji);
+		}
+		function data(){ 
+			var money=parseInt($('.asdasd').data('money'));
+			if(!money){
+				money=parseInt($('.asdasd').val());
+				if(!money){
+					_msg('请选择或输入充值金额')
+					return;
+				}
+			}
+			if(_config.config.zuidichongzhi){
+				if(money < _config.config.zuidichongzhi){
+					_msg('最低充值'+ _config.config.zuidichongzhi);
+				return;
+				}
+			}
+			var channel=$('.ems').data('pay')
+			if(!channel){
+				_msg('请选择支付方式');
+				return;
+			}
+			money=money*100
+			if(!isNaN(channel)){
+				payUrl({type:channel,money:money})
+				return;
+			}
+			_pay({money:money,type:channel})
+			 
+		}
+		function _pay(data){
+			return _msg('支付通道未开通！');
+			_loading('正在请求') 
+			_ajax('api/pay/code',function(ret,err){
+				console.log(JSON.stringify(ret)+JSON.stringify(err))
+				_loadingCloes()
+				if(ret){
+					if(ret.ret){
+						// 判断结束
+						var payData = {
+							title : '用户(ID'+_user.id+')充值'+data.money/100+_config.zhibo.liwu_title,
+							totalfee : data.money,
+							billno : ret.ret,
+							channel : data.type, 
+							optional:{
+								uid:_user.id,
+								payname:'充值'+_config.zhibo.liwu_title,
+							}
+						};
+						beecloud.pay(payData, payCallBack);
+						function payCallBack(ret, err) {
+						//	alert(JSON.stringify(ret)+JSON.stringify(err))
+							if(ret){
+								if(ret.result_code==0){
+									_userInfo()
+									if(ret.result_msg=='支付成功'){
+										_alert('已成功充值'+(data.money/100)+_config.zhibo.liwu_title,function(ret,err){
+											_close()
+										})
+										return;
+									}
+								}
+								if(ret.errMsg){
+									alert(JSON.stringify(ret))
+								}else{
+									_msg(ret.result_msg)
+								}
+								 
+							}else{
+								_alert(JSON.stringify(err))
+							} 
+						}
+					}else{
+						_alert('ret.err:'+ret.err)
+					}
+				}else{
+					_alert(JSON.stringify(err))
+				}
+			},data)
+		}
+		// 获取支付列表
+		function payList(){
+			_ajax('api/pay/payList',function(ret,err){
+				console.log(JSON.stringify(ret)+JSON.stringify(err))
+				if(ret){
+					var evalData = doT.template($api.html($api.byId('sx-list')));
+					$api.html($api.byId('sx-view'), evalData(ret));
+					api.parseTapmode();
+					$("#input").bind('input propertychange', function(){
+						var text=$(this).val();
+						$('#inputs em').text('+'+parseInt(text*zengbi))
+						var yujiMoney=$(this).val()
+						yuji = parseInt(yujiMoney)+(_app ? '元' : _config.zhibo.liwu_title);
+						$('#yuji').text(yuji)
+					});
+				}else{
+					_alert(JSON.stringify(err));
+				}
+			},{type:'app'})
+		}
+		function x(_this){
+			$('.ems').removeClass('ems')
+			$(_this).addClass('ems')
+			var pay=$(_this).data('pay');
+			$('.aui-list-in .aui-list-item em').remove()
+			$(_this).append('<em class="aui-iconfont aui-icon-correct"></em>')
+		}
+		function i(_this){
+			$('.asdasd').removeClass('asdasd')
+			$(_this).addClass('asdasd')
+			$('#inputs em').css('background','#FF2D4B')
+			var yujiMoney=$(_this).val()
+			yuji=parseInt(yujiMoney)+(_app ? '元' : _config.zhibo.liwu_title);
+			$('#yuji').text(yuji)
+		}
+		function m(_this){
+			$('.asdasd').removeClass('asdasd')
+			$(_this).addClass('asdasd')
+			$('#inputs em').css('background','#ccc')
+			var yujiMoney=$('.asdasd').data('money')
+			yuji=parseInt(yujiMoney)+(_app ? '元' : _config.zhibo.liwu_title);
+			$('#yuji').text(yuji)
+		}
+		// 获取第三方跳转链接
+		function payUrl(data){
+			_loading();
+			_ajax('pay/payUrl',function(ret,err){
+				_loadingCloes()
+				if(ret){
+					if(ret.ret){
+						console.log(ret.ret)
+						_url({title:"在线充值",url:ret.ret},'yichuijingpai_curl')
+					}else{
+						_msg(ret.err)
+					}
+				}else{
+					alert(JSON.stringify(err))
+				}
+			},{type:data.type,money:data.money,payname:'充值'+_config.zhibo.liwu_title})
+		}
+	</script>
+</html>

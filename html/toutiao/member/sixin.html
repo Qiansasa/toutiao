@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/sixin.css" />
+	</head>
+	<body>
+		<div class="aui-content sx-s-1">
+			<script id="sx-list" type="text/x-dot-template">
+				{{ for(var i=0,len=it.length; i < len; i++) { }}
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({title:'用户id:'+{{= it[i].targetId}},id:{{= it[i].targetId}},url:'member/sixin_view'})">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							{{? it[i].unreadMessageCount}}
+							<div class="weidu">
+								<div class="aui-badge" style="position:relative;top:0; left:0">{{= it[i].unreadMessageCount}}</div>
+							</div>
+							{{?}} 
+							<img src="{{= eval('(' + it[i].latestMessage.extra.replace(/}{/, ',') + ')').img}}" class="aui-img-round aui-list-img-sm">
+						</div>
+						<div class="aui-list-item-inner ">
+							<div class="aui-list-item-text sx-s-1-username">
+								<div class="aui-list-item-title ">
+									 
+									{{= it[i].latestMessage.extra.nickname ? it[i].latestMessage.extra.nickname : '用户'}}
+								</div>
+								<div class="aui-list-item-right">
+									{{= dateStr(it[i].sentTime/1000)}}
+								</div>
+							</div>
+							<div class="aui-list-item-text sx-s-1-text">
+								{{= it[i].latestMessage.text ? it[i].latestMessage.text : ''}}
+							</div>
+						</div>
+					</div>
+				</li>
+				{{ } }}
+			</script>
+			<ul class="aui-list aui-media-list" id="sx-view">
+				 
+				<!--<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="../../image/touxiang.png" class="aui-img-round aui-list-img-sm">
+							<div class="weidu">
+								<div class="aui-badge" style="position:relative;top:0; left:0">88</div>
+							</div>
+						</div>
+						<div class="aui-list-item-inner ">
+							 
+							<div class="aui-list-item-text sx-s-1-username">
+								<div class="aui-list-item-title ">
+									速翔网络
+								</div>
+								<div class="aui-list-item-right">
+									08:00
+								</div>
+							</div>
+							<div class="aui-list-item-text sx-s-1-text">
+								现在可以开始聊天了
+							</div>
+						</div>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/doT.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var rong,xiaoxi=1
+		apiready = function() {
+			rong = api.require('rongCloud2');
+			// 回到屏幕
+			api.addEventListener({
+				name : 'viewappear'
+			}, function(ret, err) { 
+			});
+			rongyun_init();
+			// 接受更新
+			api.addEventListener({
+			    name: 'rong_gengxin'
+			}, function(ret, err) {
+			    if(ret.value.gengxin){
+			    	rongyun_init();
+			    } 
+			});
+		}
+		// 获取聊天列表
+		function rongyun_init() {
+			rong.getConversationList(function(ret, err) {
+				var evalData = doT.template($api.html($api.byId('sx-list')));
+				console.log(JSON.stringify(ret.result))
+			 	if(ret.result.length){
+			 		$api.html($api.byId('sx-view'), evalData(ret.result));
+					api.parseTapmode();
+			 	}else{
+			 		xiaoxi = 0;
+			 		$api.html($api.byId('sx-view'),'<div id="jiazai" style="padding-top: 50%;"><img style="width: 5rem !important; height:  auto !important;" src="../../image/2019/wu.png" /><p>暂无消息</p></div>');
+			 	}
+				 
+			})
+		}
+		function dateStr(date){
+		    //获取js 时间戳
+		    var time=new Date().getTime();
+		    //去掉 js 时间戳后三位，与php 时间戳保持一致
+		    time=parseInt((time-date*1000)/1000);
+		
+		    //存储转换值 
+		    var s;
+		    if(time<60*10){//十分钟内
+		        return '刚刚';
+		    }else if((time<60*60)&&(time>=60*10)){
+		        //超过十分钟少于1小时
+		        s = Math.floor(time/60);
+		        return  s+"分钟前";
+		    }else if((time<60*60*24)&&(time>=60*60)){ 
+		        //超过1小时少于24小时
+		        s = Math.floor(time/60/60);
+		        return  s+"小时前";
+		    }else if((time<60*60*24*3)&&(time>=60*60*24)){ 
+		        //超过1天少于3天内
+		        s = Math.floor(time/60/60/24);
+		        return s+"天前";
+		    }else{ 
+		        //超过3天
+		        var date= new Date(parseInt(date) * 1000);
+		        return date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate();
+		    }
+		}
+		function _extra(a){
+		//	console.log("data1:"+a)
+		//	a = "{uid:'1',img:'http://img.1424445608.com/00ffd20180810095422971133.jpg',nickname:'速翔网络'}";
+//			console.log("data2:"+a)
+			a =  eval('(' + a + ')');
+//			console.log(a);
+//			console.log(JSON.stringify(a));
+//			console.log(a.nickname)
+			a.img = a.img ? a.img+'?imageView2/1/w/100/h/100/format/jpg' : '../../image/touxiang.png';
+			return a;
+		}
+		function clearConversations(){
+			rong.clearConversations({
+			    conversationTypes: ['PRIVATE']
+			}, function(ret, err) {
+				if(xiaoxi){
+			 		$api.html($api.byId('sx-view'),'<div id="jiazai" style="padding-top: 50%;"><img style="width: 5rem !important; height:  auto !important;" src="../../image/2019/wu.png" /><p>暂无消息</p></div>');
+					_msg('清空成功')
+				}else{
+					_msg('无消息')
+				}
+				 
+			})
+		}
+	</script>
+</html>

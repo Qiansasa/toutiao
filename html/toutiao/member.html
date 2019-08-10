@@ -1,0 +1,621 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/member_2019.css" />
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="sx-u-1">
+			<div class="sx-u-1-1" style="display: ;" tapmode onclick="_login();">
+				<img src="../image/bak.png" />
+			</div>
+			<div class="sx-u-1-2" style="display: none;">
+				<ul class="aui-list aui-media-list" tapmode onclick="_u()">
+					<li class="aui-list-item aui-list-item-middle">
+						<div class="aui-media-list-item-inner">
+							<div class="aui-list-item-media" style="width: 4rem;">
+								<img src="../image/touxiang.png" id="userImg" class="aui-img-round aui-list-img-sm">
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow">
+								<div class="aui-list-item-text">
+									<div class="aui-list-item-title" id="username">
+										
+									</div>
+								</div>
+								<div class="aui-list-item-text" style="padding-top: 0.2rem;">
+									<img style="width: 3.2rem;" src="../image/anl.png" />
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<div class="aui-card-list-footer">
+					<div tapmode onclick="_url({index:0,qian:1,fan:0},'member/GzFsFk_win',true)">
+						<div id="guanzhu">
+							0
+						</div>
+						<p>
+							关注
+						</p>
+					</div>
+					<div tapmode onclick="_url({index:1,qian:1,fan:0},'member/GzFsFk_win',true)">
+						<div id="fensi">
+							0
+						</div>
+						<p>
+							粉丝
+						</p>
+					</div>
+					<div tapmode onclick="_url({index:2,qian:1,fan:0},'member/GzFsFk_win',true)">
+						<div id="fangke">
+							0
+						</div>
+						<p>
+							访客
+						</p>
+					</div>
+					<div tapmode onclick="huozan();">
+						<div id="huozan">
+							0
+						</div>
+						<p>
+							获赞
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="sx-u-2">
+			<div class="aui-card-list-footer">
+				<div tapmode onclick="_url({index:0,qian:1,fan:0},'member/ScLs_win',true)">
+					<img src="../image/2019/bai.png" />
+					<p>
+						我的收藏
+					</p>
+				</div>
+				<div tapmode onclick="_url({title:'评论',url:'member/xxtzPing',qian:1,fan:1})">
+					<img src="../image/2019/bag.png" />
+					<p>
+						我的评论
+					</p>
+				</div>
+				<div tapmode onclick="_url({title:'我的点赞',url:'member/xxtzZan',qian:1,fan:1})">
+					<img src="../image/2019/bah.png" />
+					<p>
+						我的点赞
+					</p>
+				</div>
+				<div tapmode onclick="_url({index:1,qian:1,fan:0},'member/ScLs_win',true)">
+					<img src="../image/2019/baj.png" />
+					<p>
+						浏览历史
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="sx-u-3 fx-member-yaoqing">
+			<section class="aui-grid sx-wode">
+				<div class="aui-row">
+					<div class="aui-col-xs-4" tapmode onclick="_url({url:'yaoqing/shouru',title:'我的收入'},'',true)">
+						<p>
+							我的金币
+						</p>
+						<div class="aui-grid-label">
+							0个
+						</div>
+					</div>
+					<div class="aui-col-xs-4" tapmode onclick="_url({url:'yaoqing/shouru',index:1,title:'我的收入'},'',true)">
+						<p>
+							我的零钱
+						</p>
+						<div class="aui-grid-label">
+							￥0.00
+						</div>
+					</div>
+					<div class="aui-col-xs-4 " tapmode onclick="_url({url:'yaoqing/index',index:1,title:'邀请收徒'},'',true)">
+						<p>
+							我的徒弟
+						</p>
+						<div class="aui-grid-label">
+							0人
+						</div>
+					</div>
+				</div>
+			</section>
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({url:'yaoqing/index',title:'邀请收徒'},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow" style="border-left: 0.3rem solid #FECB82;  margin-bottom: 0.5rem; padding-left: 0.5rem;" >
+						<div class="aui-list-item-title">
+							<p style="color: #333;font-size: 0.8rem; font-weight: bold;"></p>
+							<p style="color: #f00; font-size: 0.6rem;padding-top: 0.15rem; "></p>
+						</div>
+						<!--<div class="aui-list-item-right">
+						<div class="aui-dot" style="position:relative;top:0; right:0"></div>
+						</div>-->
+					</div>
+				</li>
+				<section class="aui-grid sx-wodefenxiang">
+					<div class="aui-row">
+						<div class="aui-col-5" tapmpde onclick="_weixin('session')">
+							<img src="../image/yaoqing/wx.png" />
+							<div class="aui-grid-label">
+								微信收徒
+							</div>
+						</div>
+						<div class="aui-col-5" tapmpde onclick="_weixin('timeline')">
+							<img src="../image/yaoqing/wxq.png" />
+							<div class="aui-grid-label">
+								朋友圈
+							</div>
+						</div>
+						<div class="aui-col-5" tapmpde onclick="_qq('shareNews')">
+							<img src="../image/yaoqing/qq.png" />
+							<div class="aui-grid-label">
+								QQ收徒
+							</div>
+						</div>
+						<div class="aui-col-5" tapmpde onclick="_url({url:fx_url+'index/m/erweima/uid/'+_user.id,title:'二维码'},'curl',true)">
+							<img src="../image/yaoqing/2.png" />
+							<div class="aui-grid-label">
+								面对面
+							</div>
+						</div>
+						<div class="aui-col-5" tapmpde onclick="fenxiang()">
+							<img src="../image/view_1.png" />
+							<div class="aui-grid-label">
+								更多
+							</div>
+						</div>
+					</div>
+				</section>
+			</ul>
+		</div>
+		<div class="sx-u-3  yaoqingma" style="display: none">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({url:'yaoqing/yaoqingma',title:'输入邀请码'},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title" style="font-size: 0.75rem">
+							输入邀请码
+						</div>
+						<div class="aui-list-item-right aui-text-right" id="zailingmoney" style="color: #CE1C10;"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="sx-u-3" id="tjias">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({url:'yaoqing/mall',title:'兑换提现'},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title" style="font-size: 0.75rem">
+							兑换提现
+						</div>
+						<div class="aui-list-item-right aui-text-right" id="duihuan" style="color: #CE1C10;"></div>
+					</div>
+				</li>
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({url:'yaoqing/renwu',title:'任务系统'},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title" style="font-size: 0.75rem">
+							任务系统
+						</div>
+						<div class="aui-list-item-right aui-text-right" id="renwu" style="color: #CE1C10;"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="sx-u-3">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow" tapmode onclick="_url({},'member/sixin_win',true)"> 
+						<div class="aui-list-item-title">私信</div>
+						<div class="aui-list-item-right" id="sixin_num" style="display: none">
+	                        <div class="aui-badge" style="position:relative;top:0; left:0"></div>
+	                    </div>
+					</div> 
+				</li>
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({url:'member/xxtz',title:'消息通知',qian:1,fan:0},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						消息通知
+					</div>
+				</li>
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-list-item-inner aui-list-item-arrow" tapmode onclick="_url({title:'意见反馈',url:'member/yjfk',qian:1,fan:0},'',true)">
+						意见反馈
+					</div>
+				</li>
+				<li class="aui-list-item aui-list-item-middle" tapmode onclick="_url({title:'设置',url:'member/sz',qian:1,fan:0},'',true)">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						系统设置
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var uid, fx_data,rong
+		apiready = function() {
+			view()
+			var header = $api.dom('.sx-u-1');
+			$api.fixStatusBar(header);
+			api.parseTapmode();
+			rong = api.require('rongCloud2');
+			api.addEventListener({
+				name : 'viewappear'
+			}, function(ret, err) {
+				if($api.getStorage('user')){
+					viewAjax();
+					getUnreadCountByConversationTypes();
+				}else{
+					view()
+				}
+				// 每日登录奖励
+				_daily({
+					name : 'money_login'
+				});
+			}); 
+			getUnreadCountByConversationTypes();
+			if($api.getStorage('app')){
+				$('#tjias').hide();
+			}
+		}
+		 
+		 
+		function view(){
+			_user=$api.getStorage('user')
+			if(!_user || _user=='undefined'){
+			//	alert(_user)
+				_uot()
+				_user='';
+			}
+			if(_user){
+				$('.sx-u-1-1').hide();
+				$('.sx-u-1-2').show();
+				$('#guanzhu').text(_user.dongtai)
+				$('#fensi').text(_user.fensi)
+				$('#fangke').text(_user.fangke);
+				$('#huozan').text(_user.huozan);
+				
+				$('#username').text(_user.username);
+				uid=_user.id;
+				$('#userImg').attr('src',_user.img+'?imageView2/1/w/100/h/100/format/jpg');
+				
+				if(!_user.yaoqing.s1){
+					$('#zailingmoney').text('再领取'+_config.yaoqing.money_yaoqing+'元红包')
+					$('.yaoqingma').show();
+				}else{
+					$('.yaoqingma').hide()
+				}
+				var l=$('.sx-wode .aui-col-xs-4');
+				l.eq(0).children('.aui-grid-label').text(_user.yaoqing.jinbi+'个');
+				l.eq(1).children('.aui-grid-label').text('￥'+(_user.yaoqing.money/100).toFixed(2));
+				l.eq(2).children('.aui-grid-label').text(_user.yaoqing.tudi_num+'人');
+				fx_data={
+					title:_config.yaoqing.fenxiang_title,
+					description:_config.yaoqing.fenxiang_content,
+					img:_image+'logo.png',
+					url:fx_url+'m/yaoqing/uid/'+$api.getStorage('user').id
+				}
+				
+			}else{
+				$('.sx-u-1-1').show();
+				$('.sx-u-1-2').hide();
+			}
+			if($api.getStorage('app')){
+				$('.fx-member-yaoqing').hide();
+			}
+			var yaoqing=$(".fx-member-yaoqing .aui-list-item-title p");
+			yaoqing.eq(0).text(_config.yaoqing.title);
+			yaoqing.eq(1).text(_config.yaoqing.msg);
+			$('#renwu').text(_config.yaoqing.renwu);
+			$('#duihuan').text(_config.yaoqing.duihuan);
+			_imageCache();
+		}
+		function viewAjax(){
+			_user=$api.getStorage('user')
+			if(!_user){
+				api.refreshHeaderLoadDone();
+				view()
+				//_login();
+				return;
+			}
+			_ajax('api/member/info', function(ret, err) {
+				api.refreshHeaderLoadDone();
+				console.log(JSON.stringify(ret));
+				if (ret) {
+					$api.setStorage('user', ret.ret);
+					_user=ret.ret
+					view()
+					api.parseTapmode();
+					_imageCache();
+				} else {
+					_uot()
+					_alert('请重新登录',function(ret,err){
+						_login();
+					})
+				}
+			})
+		}
+		// 打开个人主页
+		function _u(){
+			_url({uid:uid},'u_win')
+		}
+		 
+		// 2018年3月1日 12:49:24
+		function fenxiang() {
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+ 	
+			if($api.getStorage('app')){
+				// 上架显示
+				var sharedModule = api.require('shareAction');
+				sharedModule.share({
+					text : fx_data.title + fx_data.content,
+					type : 'text'
+				});
+				return;
+			}
+			var row=2;
+			var items=[{icon: _image+'share/1.png',title: '朋友圈'},{icon: _image+'share/2.png',title: '好友'},{icon: _image+'share/3.png',title: 'QQ'},{icon: _image+'share/4.png',title: '空间'},{icon: _image+'share/5.png',title:'微博'},{icon: _image+'share/101.png',title: '系统'},{icon: _image+'share/102.png',title: '短信'},{icon: _image+'share/103.png',title:'邮件'},{icon: _image+'share/104.png',title: '复制链接'}];
+			// alert(1)
+		//	console.log(JSON.stringify(fx_data))
+ 			var MNActionButton = api.require('MNActionButton');
+			MNActionButton.open({
+			    layout: {
+			        row: row,
+			        col: 5,
+			        offset: 0
+			    },
+			    animation: false,
+			    autoHide: true,
+			    styles: {
+			        maskBg: 'rgba(0,0,0,0.3)',
+			        bg: '#F8F8F8',
+			        indicator: {
+			            color: '#c4c4c4',
+			            highlight: '#9e9e9e'
+			        }, 
+			    },
+			    items:  items
+			}, function(ret) {
+				if(ret.eventType=="click"){
+					var index=ret.index;
+					if(index==0){
+						_weixin('timeline',fx_data)
+					}else if(index==1){
+						_weixin('session',fx_data)
+					}else if(index==2){
+						_qq('shareNews',fx_data)
+					}else if(index==3){
+						_qq('QFriend',fx_data)
+					}else if(index==4){
+						_weibo(fx_data)
+					}else if(index==5){	// 系统
+						var sharedModule = api.require('shareAction');
+						sharedModule.share({
+							text : fx_data.title + fx_data.content,
+							type : 'text'
+						});
+					}else if(index==6){	// 短信
+						api.sms({
+							numbers : [],
+							text : fx_data.title+fx_data.url
+						}, function(ret, err) {
+							if (ret && ret.status) {
+								_msg('已发送')
+							} 
+						});
+					}else if(index==7){	// 邮件
+						api.mail({
+							recipients : [],
+							subject : fx_data.title,
+							body : fx_data.content+fx_data.url,
+						}, function(ret, err) {
+							if (ret && ret.status) {
+								_msg('已发送')
+							}
+						});
+					}else if(index==8){	// 复制
+						var clipBoard = api.require('clipBoard');
+						clipBoard.set({
+							value : fx_data.url
+						}, function(ret, err) {
+							if (ret) {
+								_msg('复制成功，把链接分享给朋友吧！')
+							}
+						});
+					}else if(index==9){	//举报
+						if(!_user){
+							_alert('请先登录',function(ret,err){
+								_login();
+							})
+							return;
+						}
+						buttons = ['广告', '重复、旧闻', '低俗', '标题夸张', '与事实不符', '内容质量差', '疑似抄袭', '其他问题，我要吐槽 > '];
+						api.actionSheet({
+							title : '举报内容问题',
+							cancelTitle : '取消举报',
+							buttons : buttons
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							if(index==8){
+								_url({aid:id,url:'member/jubaoAdd',title:'举报内容'})
+								return;
+							}
+							if(index!=9){
+								_ajax('api/member/jubao',function(ret,err){
+									if(ret){
+										if(ret.ret){
+											_msg(ret.ret)
+										}else{
+											_msg(ret.err)
+										}
+									}else{
+										_alert(JSON.stringify(err));
+									}
+								},{content:buttons[index - 1],aid:id})
+							}
+						});
+					}else if(index==10){
+						// 删除微头条
+						api.actionSheet({
+						    cancelTitle: '取消',
+						    destructiveTitle: '确认要删除吗？',
+						}, function(ret, err) {
+						    var index = ret.buttonIndex;
+						 	if(index==1){
+						 		_loading('正在删除')
+						 		_ajax('api/member/weitoutiaoDel/',function(ret,err){
+									if(ret){
+										_loadingCloes()
+										if(ret.ret){
+											// 更新微头条
+											var view = 'view();';
+											api.execScript({
+											    name: 'weitoutiao_win',
+								    			frameName: 'weitoutiao',
+											    script: view
+											});
+											// 窗口提示返回
+											_alert(ret.ret,function(ret,err){
+												_close(1)
+											})
+										}else{
+											_msg(ret.err)
+										}
+									}
+								},{aid:article.id})
+						 	}
+						});
+					}else{
+						_msg(index)
+						return;
+					}
+				}
+			});
+		}
+		// 微信分享
+		// type session（会话） timeline（朋友圈） favorite（收藏）
+		function _weixin(type) {
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+			data=fx_data;
+			var wx = api.require('wx');
+			wx.shareWebpage({
+				scene : type,
+				title : data.title,
+				description : data.description,
+				thumb : data.img,
+				contentUrl : data.url
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功')
+					_daily({name:'money_fenxiang_1'});
+				}
+			});
+		}
+		// QQ分享
+		// type 分享内容到好友或空间，取值范围：QZone、QFriend
+		function _qq(type){
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+			data=fx_data;
+			var obj = api.require('qq');
+			obj.shareNews({
+				url : data.url,
+				title : data.title,
+				description : data.description,
+				imgUrl : data.img,
+				type : type,
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功');
+					_daily({name:'money_fenxiang_1'});
+				} 
+			});
+		}
+		// 微博分享
+		function _weibo() {
+			if(!$api.getStorage('user')){
+				_login();
+				return;
+			}
+			data=fx_data;
+			var weibo = api.require('weibo');
+			weibo.shareWebPage({
+				text : data.title,
+				title : data.title,
+				description : data.description,
+				thumb : data.img,
+				contentUrl : data.url
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功');
+					_daily({name:'money_fenxiang_1'});
+				}
+			});
+		}
+		// 将图片下载本地，分享到第三方平台 
+		function _fenxiangimg(){
+			api.imageCache({
+				url : sx_gurl+sx.image,
+			}, function(ret, err) {
+			//	console.log(JSON.stringify(ret)+JSON.stringify(err))
+				if(ret.status){
+					fenxiangimg=ret.url;
+				}
+			});
+		}
+		// 赞
+		function huozan(){
+			var b = parseInt($('#huozan').text());
+			api.openFrame({
+				name : 'huozan',
+				url : html_win + 'huozan.html',
+				bounces : false,
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto',
+				},
+				bgColor : 'rgba(0,0,0,0)',
+				pageParam:{
+					b:b
+				},
+				animation:{
+					type:"fade",                //动画类型（详见动画类型常量）
+				    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+				    duration:100    
+				},
+			})
+		}
+		// 获取某（些）会话类型的未读消息数
+		function getUnreadCountByConversationTypes(){
+			rong.getUnreadCountByConversationTypes({
+			    conversationTypes: ['PRIVATE']
+			}, function(ret, err) {
+			//	console.log(JSON.stringify(ret));
+ 				if(ret.result){
+					$('#sixin_num .aui-badge').text(ret.result);
+					$('#sixin_num').show();
+				}else{
+					$('#sixin_num').hide();
+				}
+			})	 
+		}
+	</script>
+</html>

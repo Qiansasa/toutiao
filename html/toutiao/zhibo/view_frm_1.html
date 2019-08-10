@@ -1,0 +1,973 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/suxiang-zhibo.css" />
+		<style>
+			body {
+				background: transparent !important;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="view-header">
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item aui-list-item-middle">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media" >
+							<img tapmode onclick="u()" src="../../image/touxiang.png" class="aui-img-round aui-list-img-sm">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text"><span tapmode onclick="u()"></span></div>
+							<div class="aui-list-item-text" id="fensi">
+								<span tapmode onclick="u()" tapmode onclick="u()">0 粉丝</span>
+							</div>
+						</div>
+					</div>
+					<img class="close" src="../../image/close_bai.png" tapmode onclick="c()" />
+				</li>
+			</ul>
+			<div class="view-renqi aui-card-list-footer">
+				<div class="view-renqi-1">
+				<!--	<div>
+						<img src="../../image/zhibo/view-renqi-1.png" />
+						<span>0</span>
+					</div>-->
+					<div tapmode onclick="liwu_user();">
+						<img src="../../image/zhibo/view-renqi-2.png" />
+						<span id="zhu_zuan" data-num="0">0</span>
+					</div>
+				</div>
+				<div class="view-renqi-2">
+					<span>0</span> 人气
+				</div>
+			</div>
+			<!--<div class="view-sz">
+				设置粉丝团
+			</div>-->
+ 
+		</header>
+		<footer class="view-footer  aui-bar-tab">
+			<div class="kaishi" style="display: none">
+				<div class="kaishi-1 aui-card-list-footer">
+					<div tapmode onclick="switchCamera()">
+						<img src="../../image/zhibo/sz-1.png" />
+						<p>
+							翻转
+						</p>
+					</div>
+					<div tapmode onclick="setFilter()">
+						<img src="../../image/zhibo/sz-2.png" />
+						<p>
+							滤镜
+						</p>
+					</div>
+					<div tapmode onclick="setScreen()">
+						<img src="../../image/zhibo/sz-4.png" />
+						<p>
+							横屏竖屏
+						</p>
+					</div>
+				</div>
+				<div class="kaishi-2" tapmode onclick="kaishi()">
+					开始直播
+				</div>
+			</div>
+			<div class="view-liaotian" id="view-liaotian">
+				<div class="text">
+					<p class="p1"></p>
+				</div>
+			</div>
+			<div class="aui-bar aui-margin-b-15">
+				<div class="aui-bar-tab-item view-footer-1" tapmode onclick="input()">
+					<p>
+						
+					</p>
+				</div>
+				<div class="aui-bar-tab-item view-footer-2">
+					<p class="hk" tapmode onclick="fenxiang();"><img src="../../image/zhibo/view-fx.png" />
+					</p>
+				</div>
+				<div class="aui-bar-tab-item view-footer-2">
+					<p class="hk" tapmode onclick="liwu();"><img src="../../image/zhibo/view-liw.png" />
+					</p>
+				</div>
+				<div class="aui-bar-tab-item view-footer-3">
+					<p style="display: none" tapmode onclick="sz();"><img src="../../image/zhibo/fenlei.png" />
+					</p>
+					<p class="hk" tapmode onclick="xin();"><img src="../../image/zhibo/view-xin.png" />
+					</p>
+				</div>
+			</div>
+		</footer>
+ 
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		var publisher, chat, filterOn, screenOrientation = 'portrait_up', torchOn, UIChatBox, player,applause,input_ok=false;
+		var session = {};
+		apiready = function() {
+			applause = api.require('applause');
+			userInfo()
+			//保持屏幕唤醒
+			api.setKeepScreenOn({
+				keepOn : true
+			});
+			//监听网络情况
+			api.addEventListener({
+				name : 'offline'
+			}, function(ret, err) {
+				liaotianshi('网络异常', 'p');
+			});
+			api.addEventListener({
+				name : 'online'
+			}, function(ret, err) {
+				liaotianshi('网络恢复', 'p');
+			});
+			console.log(JSON.stringify(api.pageParam));
+			session = {
+				roomId : api.pageParam['roomId'],
+				password : api.pageParam['password'],
+				nickname : api.pageParam['nickname']
+			};
+			$api.fixStatusBar($api.dom('.view-header'));
+			$api.fixTabBar($api.dom('.view-footer'))
+			UIChatBox = api.require('UIChatBox');
+			api.parseTapmode();
+			if (api.pageParam['ret']['role'] == 2) {
+				$('.view-footer .kaishi').show();
+				$('.view-footer .view-liaotian').hide();
+				$('.view-footer .aui-bar').hide();
+				// 底部设置直播功能
+				$('.view-footer-3 .hk').remove();
+				$('.view-footer-3 p').show();
+				// 结束
+				publisher = api.require('gotyeLivePublisher');
+				publisher.init({
+					session : session
+				});
+				//liaotianshi('正在连接直播服务器', 'p');
+				//在推流之前，需要先打开设备的摄像头
+				publisher.startPreview({
+					preview : 'zhibo/view_frame',
+					position : 'front',
+					rect : {
+						x : 0,
+						y : 0,
+						w : api.frameWidth,
+						h : api.frameHeight
+					}
+				}, function(ret, err) {
+					if (ret) {
+						//登录，此时并未正式开启直播，如要开启，还需触发startPublisher
+						publisher.login({
+							force : true
+						}, function(ret, err) {
+							if (ret) {
+								//	liaotianshi('连接直播服务器成功', 'p');
+							} else {
+								liaotianshi('连接直播服务器失败', 'p');
+							}
+							api.execScript({
+								script : '_loadingCloes()'
+							});
+						});
+					} else {
+						liaotianshi('打开设备摄像头失败', 'p');
+						api.execScript({
+							script : '_loadingCloes()'
+						});
+					}
+				});
+				publisher.addEventListener({
+					name : 'connected'
+				}, function(ret, err) {
+					liaotianshi('连接直播服务器成功', 'p');
+				});
+				publisher.addEventListener({
+					name : 'disconnected'
+				}, function(ret, err) {
+					liaotianshi('直播服务器断开连接', 'p');
+				});
+				publisher.addEventListener({
+					name : 'reconnecting'
+				}, function() {
+					liaotianshi('直播服务器重新连接中', 'p');
+				});
+				publisher.addEventListener({
+					name : 'error'
+				}, function(ret, err) {
+					liaotianshi(ret.description, 'p');
+				});
+				publisher.addEventListener({
+					name : 'forceLogout'
+				}, function() {
+					liaotianshi('您的账号在另外的设备登录，当前设备需强制踢下线1', 'p');
+					api.alert({
+						msg : '您的账号在另外的设备登录，当前设备需强制踢下线',
+						buttons : ['知道了']
+					}, function(ret, err) {
+						if (ret.buttonIndex == '1') {
+							_close();
+						}
+					});
+				});
+			} else {
+				xin_donghua();
+				//观众视角，初始化播放器
+				player = api.require('gotyeLivePlayer');
+				player.init({
+					session : session
+				});
+				player.play({
+					playView : "zhibo/view_frame",
+					rect : {
+						x : 0,
+						y : 0,
+						w : api.frameWidth,
+						h : api.frameHeight
+					}
+				});
+				//aspectFill表示保持比例撑满，视频会按照比例放大直到撑满屏幕为止
+				player.setDisplayMode({
+					mode : 'aspectFill'
+				});
+				//根据实际业务需求加入监听事件
+				player.addEventListener({
+					name : 'connected'
+				}, function(ret, err) {
+					if (ret) {
+						console.log(JSON.stringify(ret));
+						liaotianshi('连接直播服务器成功', 'p');
+					} else {
+						console.log(JSON.stringify(err));
+					}
+				});
+				player.addEventListener({
+					name : 'disconnected'
+				}, function(ret, err) {
+					liaotianshi('直播服务器断开连接', 'p');
+				});
+				player.addEventListener({
+					name : 'error'
+				}, function(ret, err) {
+					liaotianshi(ret.description, 'p');
+				});
+				player.addEventListener({
+					name : 'liveStart'
+				}, function(ret, err) {
+					liaotianshi('直播开始', 'p');
+				});
+				player.addEventListener({
+					name : 'liveStop'
+				}, function(ret, err) {
+					liaotianshi('直播结束', 'p');
+				});
+				api.execScript({
+					script : '_loadingCloes()'
+				});
+			}
+			//初始化聊天信息
+			//	liaotianshi('正在连接聊天服务器','p');
+			chat = api.require('gotyeLiveChat');
+			chat.init(session);
+			chat.login(function(ret, err) {
+				if (ret) {
+					input_ok = true;
+				//	console.log('login：' + JSON.stringify(ret));
+					localId = ret.account;
+					liaotianshi('连接聊天服务器成功', 'p');
+					zhubo_info();	// 更新人气和主播钻石
+					jinru();	// 提醒用户进入主播间
+				} else {
+				//	console.log('login：' + JSON.stringify(err));
+					liaotianshi('连接聊天服务器失败', 'p');
+				}
+			});
+			//监听收到的消息
+			chat.addEventListener({
+				name : 'receiveMsg'
+			}, function(ret, err) {
+				if (ret) {
+					console.log('收到消息ret：' + JSON.stringify(ret));
+					if (ret.status == 0) {
+					
+						var extra = eval('(' + ret.extra.replace(/}{/, ',') + ')');
+						
+						if(extra.type == '100'){
+							// 用户进入直播间
+							liaotianshi("<b style='color:#FFD600'>"+extra.username+"</b>进入了直播间",'p');
+						}else if(extra.type == '99999'){
+							// 礼物动画
+						//	console.log('收到礼物：' + JSON.stringify(extra.liwu_data));
+							liwu_donghua(extra.liwu_data)
+						}else{
+							 
+							var span = "";
+							if (extra.role == 2) {
+								span = '<span class="b2">主播</span>';
+							}
+							liaotianshi(extra.username + " : " + ret.text, 'p', span);
+						}
+								
+							
+					}
+				}else{
+					console.log('收到消息err：' + JSON.stringify(ret));
+				}
+			});
+			// 监听登录设备
+			chat.addEventListener({
+				name : 'forceLogout'
+			}, function(ret, err) {
+				liaotianshi('您的账号在另外的设备登录，当前设备需强制踢下线2', 'p');
+				api.alert({
+					msg : '您的账号在另外的设备登录，当前设备需强制踢下线',
+					buttons : ['知道了']
+				}, function(ret, err) {
+					if (ret.buttonIndex == '1') {
+						_close();
+					}
+				});
+			});
+			// 监听输入框滚动
+//			UIChatBox.addEventListener({
+//				target : 'inputBar',
+//				name : 'move'
+//			}, function(ret, err) {
+//				if (ret) {
+//				//	console.log("inputBar:" + JSON.stringify(ret));
+//					if (ret.panelHeight) {
+//					} else {
+//						//UIChatBox.close();
+//					}
+//				}
+//			});
+	 
+			 
+		}
+		// 开始直播
+		function kaishi() {
+			//liaotianshi('直播已开始', 'p');
+			$('.view-footer .kaishi').hide();
+			$('.view-footer .view-liaotian').show();
+			$('.view-footer .aui-bar').show();
+			// 开始直播
+			publisher.publish();
+			// 关闭直播	publisher.unpublish();
+		}
+
+		//获取观众总数及观众列表信息		(代码报废)
+		function initUserList() {	
+		//	zhubo_info();	// 更新人气和主播钻石
+			jinru();	// 提醒用户进入主播间
+			chat.queryUserList({
+				index : 1,
+				total : 20
+			}, function(ret, err) {
+				if (ret) {
+					console.log(JSON.stringify(ret))
+					return;
+					var ht_user = '<div class="viewer-list-item aui-ellipsis-1 aui-padded-l-15"><img class="crown" src="../image/publisher/crown.png" />主播</div>';
+					for (var i = 0; i < ret.entities.length; i++) {
+						ht_user += '<div class="viewer-list-item aui-ellipsis-1" data-account="' + ret.entities[i].account + '" tapmode onclick="onUserClick(this);event.cancelBubble=true;">' + ret.entities[i].nickname + '</div>';
+					}
+					$('#viewerList').html(ht_user);
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+		// 进入直播间
+		function jinru(){
+			liaotianshi("<b style='color:#FFD600'>"+_user.username+"</b>进入了直播间",'p');
+			var json = {
+				uid : _user.id,
+				username : _user.username,
+				img : _user.img,
+				role:api.pageParam['ret']['role'],
+				type:100  	// 进入直播间，发送内容其他用户接受提示
+			}
+			var json = JSON.stringify(json);	// 额外自定义参数
+			// 发送文字内容
+			sendText('1',json)
+			// 结束
+		}
+
+		//设置前后摄像头
+		function switchCamera() {
+			publisher.switchCamera();
+		}
+
+		//设置横屏竖屏
+		function setScreen() {
+			if (screenOrientation == 'portrait_up') {
+				screenOrientation = 'landscape_left';
+			} else {
+				screenOrientation = 'portrait_up';
+			}
+			api.setScreenOrientation({
+				orientation : screenOrientation
+			});
+		}
+
+		//设置闪光灯
+		function setTorch() {
+			if (!torchOn) {
+				torchOn = true;
+			} else {
+				torchOn = false;
+			}
+			publisher.setTorchOn({
+				on : torchOn
+			});
+		}
+
+		//设置滤镜
+		function setFilter() {
+			if (!filterOn) {
+				filterOn = true;
+				publisher.setFilter({
+					filter : 'smoothSkin'
+				})
+			} else {
+				filterOn = false;
+				publisher.setFilter({
+					filter : 'normal'
+				})
+			}
+		}
+
+		// 文字发布聊天到界面
+		function liaotianshi(text, addClass, span) {
+			console.log(text)
+			var html = '<div class="text">';
+			// html += '<p class="' + addClass + '">' + span + (addClass == 'p' ? '' : (_user.username ? _user.username + " : " : '')) + text + '</p>';
+			html += '<p class="' + addClass + '">' + (span ? span : '') + text + '</p>';
+			html += '</div>'
+			var _this = $('#view-liaotian');
+			_this.append(html);
+			_this.animate({
+				scrollTop : document.getElementById("view-liaotian").scrollHeight
+			}, 500);
+		}
+
+		// 打开设置
+		function sz() {
+			var name = 'zhibo/view_frm_sz'
+			api.openFrame({
+				name : name,
+				url : html_win + name + '.html',
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto'
+				},
+				animation : {
+					type : "push", //动画类型（详见动画类型常量）
+					subType : "from_bottom", //动画子类型（详见动画子类型常量）
+					duration : 300
+				},
+				bounces : false,
+				bgColor : 'rgba(0,0,0,0)',
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false
+			});
+		}
+
+		// 打开聊天框
+		function input() {
+			if (!$api.getStorage('user')) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+				return _login();
+			}
+			if(!input_ok){
+				return ;
+			}
+			UIChatBox.open({
+				autoFocus:true,
+				placeholder : _config.zhibo.input_text,
+				maxRows : 4,
+				emotionPath : _image + '2019/rong/emotion',
+				texts : {
+					//					recordBtn : {
+					//						normalTitle : '按住说话',
+					//						activeTitle : '松开结束'
+					//					},
+					sendBtn : {
+						title : '发送'
+					}
+				},
+				isClose : true,
+				styles : {
+					topDivider : {//(可选项)顶部分割线配置
+						width : 0, //(可选项)顶部分割线的粗细，默认：0
+						color : '#000' //(可选项)顶部分割线的颜色；默认：#000 ;支持图片设置(fs:// & widget://)
+					},
+					inputBar : {
+						borderColor : '##F9F9F8',
+						bgColor : '#F9F9F8'
+					},
+					inputBox : {
+						borderColor : '#e8e8e8', //（可选项）字符串类型；输入框的边框颜色，支持 rgb，rgba，#；默认：'#B3B3B3'
+						bgColor : '#ffffff', //（可选项）字符串类型；输入框的背景色，支持 rgb，rgba，#；默认：'#f2f2f2'
+						boardBgColor : '#fff', //（可选项）字符串类型；面板的背景色(表情面板，附加面板)，支持 rgb，rgba，#；默认：'#f2f2f2'
+						topMargin : 10,          //（可选项）数字类型；输入框距离顶部的边距；默认：10
+					},
+					emotionBtn : {
+						normalImg : _image + '2019/rong/face1.png'
+					},
+					keyboardBtn : {
+						normalImg : _image + '2019/rong/key1.png'
+					},
+					recordBtn : {
+						normalBg : '#e8e8e8',
+						activeBg : '#c4c4c4',
+						color : '#000',
+						size : 14
+					},
+					recordPanelBtn : {//JSON对象；录音面板样式
+						normalImg : '', //（可选项）字符串类型；按钮常态的图片
+						activeImg : '', //（可选项）字符串类型；按钮按下时的图片
+						width : 100, //（可选项）数字类型；按钮的宽度，默认：100
+						height : 100 //（可选项）数字类型；按钮的高度，默认：100
+					},
+					indicator : {
+						target : 'both',
+						color : '#c4c4c4',
+						activeColor : '#9e9e9e'
+					},
+					sendBtn : {
+						titleColor : '#fff',
+						bg : '#419fd9',
+						activeBg : '#247DB3',
+						titleSize : 15
+					}
+				},
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.eventType == 'show') {
+					//	UIChatBox.popupKeyboard();
+					}
+					// 发送按钮
+					if (ret.eventType == 'send') {
+						// 开始发送
+						if (ret.msg) {
+							var span = "";
+							if (api.pageParam['ret']['role'] == 2) {
+								span = '<span class="b2">主播</span>';
+							}
+							liaotianshi(_user.username + " : " + ret.msg, 'p', span);
+							var json = {
+								uid : _user.id,
+								username : _user.username,
+								img : _user.img,
+								role:api.pageParam['ret']['role']
+							}
+							extra = JSON.stringify(json);	// 额外自定义参数
+							// 发送文字内容
+							sendText(ret.msg,extra)
+							// 关闭键盘
+							UIChatBox.closeKeyboard();
+							// 关闭输入框
+							UIChatBox.close();
+						} else {
+							_msg('请说输入内容')
+						}
+					}
+				} else {
+					//	console.log("err：" + JSON.stringify(err));
+				}
+			});
+		}
+		// 封装发送文本内容
+		function sendText(text,extra){
+			chat.sendText({
+				text : text,
+				extra : extra
+			}, function(ret, err) {
+				if (err) {
+					console.log(JSON.stringify(err))
+					liaotianshi("内容发送失败，错误代码："+err.code+"，原因："+err.description);
+				}
+			});
+		}
+
+		//清除房间验证信息，销毁session实例。退出直播间时调用
+		function destroyRoomSession() {
+			var core = api.require('gotyeLiveCore');
+			core.destroyRoomSession(session);
+		}
+
+		// 关闭直播
+		function c() {
+			if (api.pageParam['ret']['role'] == 2) {
+				// 断开主播端与推流服务器的连接，不停止预览
+				publisher.unpublish();
+				// 退出主播间直播账号的登录。仅模式一有效
+				publisher.logout();
+				// 断开主播端与推流服务器的连接并停止预览
+				publisher.stop();
+			} else {
+				//停止直播播放
+				player.stop();
+			}
+			//登出聊天
+			chat.logout();
+			//销毁房间验证信息
+			destroyRoomSession();
+			_close(1);
+			//			api.confirm({
+			//			    title: 'testtitle',
+			//			    msg: 'testmsg',
+			//			    buttons: ['确定', '取消']
+			//			}, function(ret, err) {
+			//			    var index = ret.buttonIndex;
+			//			});
+		}
+
+		// 主播信息
+		function userInfo() {
+			$('.view-liaotian .text p').html(_config.zhibo.content);
+			$('.view-footer-1 p').html(_config.zhibo.input_text);
+			var img = api.pageParam['user'] ? fx_cdn + api.pageParam['user']['img'] : '';
+			var nickname = api.pageParam['user'] ? api.pageParam['user']['username'] : '';
+			var fensi = api.pageParam['user'] ? api.pageParam['user']['fensi'] : '';
+			if (api.pageParam['ret']['role'] == 2) {
+				img = _user.img;
+				nickname = _user.nickname;
+				fensi = _user.fensi;
+			}
+			$('.view-header ul img.aui-img-round').attr('src', img + "?imageView2/1/w/100/h/100");
+			var _this = $('.view-header ul .aui-list-item-text span');
+			_this.eq(0).text(nickname);
+			_this.eq(1).text(fensi + ' 粉丝');
+		}
+		// 心动画
+		function xin_donghua(){
+			// 心
+			var y = $('.view-footer-3').offset().top
+			var w = $('.view-footer-3 img').width();
+			var h = $('.view-footer-3 img').height();
+			var x = $('.view-footer-3').offset().left;
+			applause.showAppLause({
+			    rect : {
+			        x : x,
+			        y : y,
+			        w : w,
+			        h : h
+			    },
+			    placeholderImg : _image + "zhibo/view-xin-t.png",
+			    iamges : [
+			    	_image + 'zhibo/view-xin.png',
+			    ],
+			    isShowNum : false,
+			    applauseNum : 0,
+			    fixedOn : api.frameName,
+			   	fixed : true
+			});
+		}
+		// 打开主播个人主页
+		function u() {
+			api.setFullScreen({
+				fullScreen : false
+			});
+			var uid = api.pageParam['uid'] ? api.pageParam['uid'] : '';
+			if (api.pageParam['ret']['role'] == 2) {
+				uid = _user.id;
+			}
+			_url({
+				uid : api.pageParam['uid'],
+				qian : 0,
+				fan : 1
+			}, 'u_win')
+		}
+		
+		// 礼物
+		function liwu(){
+			if (!$api.getStorage('user')) {
+				api.setFullScreen({
+					fullScreen : false
+				});
+				return _login();
+			}
+			var name = 'zhibo/view_frm_liwu'
+			api.openFrame({
+				name : name,
+				url : html_win + name + '.html',
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto'
+				},
+				animation : {
+					type : "push", //动画类型（详见动画类型常量）
+					subType : "from_bottom", //动画子类型（详见动画子类型常量）
+					duration : 300
+				},
+				bounces : false,
+				pageParam:api.pageParam,
+				bgColor : 'rgba(0,0,0,0)',
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false
+			});
+		}
+		// 礼物用户榜单
+		function liwu_user(){
+			var name = 'zhibo/view_frm_liwu_user'
+			api.openFrame({
+				name : name,
+				url : html_win + name + '.html',
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : 'auto'
+				},
+				animation : {
+					type : "push", //动画类型（详见动画类型常量）
+					subType : "from_bottom", //动画子类型（详见动画子类型常量）
+					duration : 300
+				},
+				bounces : false,
+				pageParam:api.pageParam,
+				bgColor : 'rgba(0,0,0,0)',
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false
+			});
+		}
+		// 心
+		function xin(){
+			 applause.clickAppLause();
+		}
+		// 发送礼物ajax
+		function liwu_ajax(data){
+			data = eval('(' + data.replace(/}{/, ',') + ')');
+			liaotianshi(_user.username + "赠送<b style='color:#FF742D'>" + data.title+"</b>",'p');
+			data.user = {};
+			data.user.id = _user.id;
+			data.user.img = _user.img;
+			data.user.username = _user.username;
+			liwu_donghua(data);
+			liwu_msg(data);
+			var _this = $('#zhu_zuan');
+			var num = parseInt(_this.data('num')) + parseInt(data.money);
+			_this.data('num',num);
+			_this.text(_num(num));
+			_msg('赠送成功');
+			_ajax('api/zhibo/liwu_money',function(ret,err){
+				_userInfo();
+				if(ret){
+					if(ret.err){
+						_alert(ret.err)
+					}
+				//	console.log(JSON.stringify(ret))
+				}else{
+					_alert(JSON.stringify(err))
+				}
+			},{id:data.id,uid_zhu:api.pageParam['uid']})
+		}
+		// 更新主播信息
+		function zhubo_info(){
+			chat.getRoomMemberCount(function(ret, err) {
+				if (ret) {
+					$('.view-renqi-2 span').text(_num(ret.count));
+				}
+			});
+			_ajax('api/user/info',function(ret,err){
+				if(ret){
+				//	console.log(JSON.stringify(ret))
+					var _this = $('#zhu_zuan');
+					_this.data('num',ret.zhibo_zuan_s);
+					_this.text(_num(ret.zhibo_zuan_s_));
+					$('#fensi').html(_num(ret.fensi)+" 粉丝");
+					setTimeout(function(){
+						zhubo_info();
+					},5000)
+				}else{
+				//	_alert(JSON.stringify(err))
+				}
+			//	zhubo_info();
+			},{id:api.pageParam['uid'] ? api.pageParam['uid'] : _user.id})
+		}
+		// 礼物动画
+		function liwu_donghua(data){
+			console.log(JSON.stringify(data))
+			var x = 100;
+		    var y = 0;
+		    var rand = parseInt(Math.random() * (x - y + 1) + y);    
+		    var html = '<div class="view_frm_msg" id="view_frm_msg_'+rand+'"><div class="view_frm_msgs"><img class="a1" src="'+data.user.img+'?imageView2/1/w/100/h/100/format/jpg" /><div class="a2"><h2 class="aui-font-size-14 aui-ellipsis-1">'+data.user.username+'</h2><p class="aui-font-size-14 aui-ellipsis-1">'+data.title+'</p></div><img class="a3" src="'+fx_cdn+data.img+'" /></div></div>';
+			$('header').append(html);
+			setTimeout(function(){
+				$('#view_frm_msg_'+rand).animate({
+					opacity : 0,
+					top: '-2rem',
+				}, 100,function(){
+					$(this).remove();
+				})
+			},2000)
+		}
+		// 礼物给聊天室
+		function liwu_msg(data){
+			// 发送其他用户接受
+			var json = {
+				uid : _user.id,
+				username : _user.username,
+				img : _user.img,
+				role:api.pageParam['ret']['role'],
+				type:99999,	// 让其他用户收到礼物
+				liwu_data:data
+			}
+			var extra = JSON.stringify(json);	// 额外自定义参数
+			// 发送文字内容
+			sendText('1',extra)
+			// 发送结束
+		}
+		// 分享
+		// 分享按钮
+		function fenxiang() {
+			img = (api.pageParam['user'] ? fx_cdn+api.pageParam['user']['img'] : _user.img) + "?imageView2/1/w/200/h/200";
+			fx_data 	= 	{
+				title:"("+_user.nickname+')直播开始啦！',
+				description:'',
+				url:fx_url+"m/zhibo/"+(api.pageParam['uid'] ? api.pageParam['uid'] : _user.id)+'.html',
+				img:img
+			}
+			var row=2;
+ 			var items=[{icon: _image+'share/1.png',title: '朋友圈'},{icon: _image+'share/2.png',title: '好友'},{icon: _image+'share/3.png',title: 'QQ'},{icon: _image+'share/4.png',title: '空间'},{icon: _image+'share/5.png',title:'微博'},{icon: _image+'share/101.png',title: '系统'},{icon: _image+'share/102.png',title: '短信'},{icon: _image+'share/103.png',title:'邮件'},{icon: _image+'share/104.png',title: '复制'}];
+
+ 			var MNActionButton = api.require('MNActionButton');
+			MNActionButton.open({
+			    layout: {
+			        row: row,
+			        col: 5,
+			        offset: 0
+			    },
+			    animation: false,
+			    autoHide: true,
+			    styles: {
+			        maskBg: 'rgba(0,0,0,0.3)',
+			        bg: '#F8F8F8',
+			        indicator: {
+			            color: '#c4c4c4',
+			            highlight: '#9e9e9e'
+			        }, 
+			    },
+			    items:  items
+			}, function(ret) {
+				if(ret.eventType=="click"){
+					var index=ret.index;
+					if(index==0){
+						_weixin('timeline',fx_data)
+					}else if(index==1){
+						_weixin('session',fx_data)
+					}else if(index==2){
+						_qq('shareNews',fx_data)
+					}else if(index==3){
+						_qq('QFriend',fx_data)
+					}else if(index==4){
+						_weibo(fx_data)
+					}else if(index==5){	// 系统
+						var sharedModule = api.require('shareAction');
+						sharedModule.share({
+							text : fx_data.title + fx_data.content,
+							type : 'text'
+						});
+					}else if(index==6){	// 短信
+						api.sms({
+							numbers : [],
+							text : fx_data.title
+						}, function(ret, err) {
+							if (ret && ret.status) {
+								_msg('已发送')
+							} 
+						});
+					}else if(index==7){	// 邮件
+						api.mail({
+							recipients : [],
+							subject : fx_data.title,
+							body : fx_data.content,
+						}, function(ret, err) {
+							if (ret && ret.status) {
+								_msg('已发送')
+							}
+						});
+					}else if(index==8){	// 复制
+						var clipBoard = api.require('clipBoard');
+						clipBoard.set({
+							value : fx_data.url
+						}, function(ret, err) {
+							if (ret) {
+								_msg('复制成功，把链接分享给朋友吧！')
+							}
+						});
+					}else{
+						_msg(index)
+						return;
+					}
+				}
+			});
+		}
+		// 微信分享
+		// type session（会话） timeline（朋友圈） favorite（收藏）
+		function _weixin(type,data) {
+			var wx = api.require('wx');
+			wx.shareWebpage({
+				scene : type,
+				title : data.title,
+				description : data.description,
+				thumb : data.img,
+				contentUrl : data.url
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功');
+					_daily({name:'money_fenxiang_2'});
+				}
+			});
+		}
+		// QQ分享
+		// type 分享内容到好友或空间，取值范围：QZone、QFriend
+		function _qq(type,data){
+			var obj = api.require('qq');
+			obj.shareNews({
+				url : data.url,
+				title : data.title,
+				description : data.description,
+				imgUrl : data.img,
+				type : type,
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功');
+					_daily({name:'money_fenxiang_2'});
+				} 
+			});
+		}
+		// 微博分享
+		function _weibo(data) {
+			var weibo = api.require('weibo');
+			weibo.shareWebPage({
+				text : data.title,
+				title : data.title,
+				description : data.description,
+				thumb : data.img,
+				contentUrl : data.url
+			}, function(ret, err) {
+				if (ret.status) {
+					_msg('分享成功');
+					_daily({name:'money_fenxiang_2'});
+				}
+			});
+		}
+	 
+	</script>
+</html>

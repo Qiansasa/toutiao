@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/member_2019.css" />
+		<style>
+			body {
+				background-color: transparent !important;
+			 
+			}
+			.a,.b{
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 0
+			}
+			.a{
+				background-color: rgb(0, 0, 0);
+				opacity:0.3;
+				width: 100%;
+				height: 100%;
+			}
+			.b{
+				background:#fff;
+				z-index: 1;
+				width: 68%;
+				text-align: center;
+				border-radius: 0.3rem;
+				margin: 0 auto;
+				overflow: hidden;
+				padding-top: 1.2rem;
+				font-size: 0.85rem;
+				color: #000;
+			}
+			.b p{
+				font-size: 0.8rem;
+				color: #222;
+			}
+			.b b{
+				color: #F95859;
+				font-weight: bold;
+				font-size: 0.95rem;
+			}
+			.b img{
+				width: 7.5rem;
+				margin: 0 auto;
+				padding-top:0.75rem;
+				padding-bottom: 1rem;
+			}
+			.b div{
+				background: #F95859;
+				height: 2.2rem;
+				line-height: 2.2rem;
+				color: #fff;
+				font-size: 0.85rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="a" Tapmode onclick=" return api.closeFrame();"></div>
+		<div class="b" Tapmode onclick=" return api.closeFrame();">
+			<p>速翔网络</p>
+			<p style="font-size: 0.8rem;">共获得<b>0</b>个赞</p>
+			<img src="../image/2019/be5.png" />
+			<div>好的</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script type="text/javascript">
+ 
+		apiready = function() {
+			$api.text($api.dom('b'),api.pageParam['b'])
+			api.parseTapmode();
+			var _this = $api.dom('.b');
+			var a =	$api.offset(_this).h;
+			a = api.winHeight - a;
+			a = a / 2;
+			$api.css(_this,'top:'+a+"px"); 
+			
+			var _this = $api.dom('.b');
+			var a =	$api.offset(_this).w;
+			a = api.winWidth - a;
+			a = a / 2;
+			$api.css(_this,'left:'+a+"px"); 
+		}
+	 
+	</script>
+</html>

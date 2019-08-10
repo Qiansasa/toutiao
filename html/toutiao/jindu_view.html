@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<title>速翔网络 - QQ技术：1424445608</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+			body{
+				background: #DA1534 !important;
+			}
+			.sx-1,.sx-2{
+				color: #222;
+				background: #fff;
+				margin: 0.75rem;
+			}
+			.sx-1{
+				background: #F9F9F8 !important;
+			}
+			.sx-1-1,.sx-2-1{
+				text-align: center;
+				font-size: 1rem;
+				font-weight:bold;
+				color: #E2203F;
+				padding-top: 0.75rem;
+			}
+			.sx-1-1{
+				background: url('../image/sx-1-1.png') no-repeat center 1rem;
+				background-size:15rem;
+				height: 3rem;
+			}
+			.sx-1-2{
+				padding-bottom: 0.75rem;
+			}
+			.sx-1-2 b{
+				color: #E2203F;
+			}
+			.sx-1-2 ul{
+				padding: 0.5rem;
+			}
+			.sx-1-2 li{
+				font-size: 0.65rem;
+			}
+			.sx-1-2 li span.dian{
+				padding-right: 0.3rem;
+				font-size: 0.88rem;
+				color: #F1C40F;
+			}
+			.sx-1-3 img{
+				width: 100%;
+			}
+			.sx-2{
+				border-radius: 0.5rem;
+				background: #FBFAFA;
+				margin-bottom: 7rem;
+			}
+			.sx-2-2 ul,.sx-2-2 li{
+				border: 0 !important;
+				background: none !important;
+			}
+			.sx-2-2 li b{
+				color: #E2203F;
+				font-size: 0.85rem;
+			}
+			.sx-2-2 li .asd1 div{
+				font-size: 0.75rem !important;
+				padding-bottom: 0.2rem;
+				color: #222
+			}
+			.sx-2-2 li .asd2 div{
+				font-size: 0.55rem !important;
+				color: #9B9B9B
+			}
+			.sx-1{
+				 background: #F3F3F3;
+			}
+		 	.sx-2-1 img{
+		 		width: 8rem;
+		 		margin: 0 auto;
+		 		margin-bottom: 0.5rem;
+		 	}
+		 	.sx-2-2 ul{
+		 		overflow: hidden;
+		 		padding-bottom: 0.75rem;
+		 	}
+		 	.error{
+		 		text-align: center;
+		 		margin-top: 3rem;
+		 		margin-bottom: 5rem;
+		 	}
+		 	.error img{
+		 		margin: 0 auto;
+		 		width: 3rem;
+		 		padding-bottom: 0.5rem;
+		 	}
+		 	.sx-3{
+		 		background: #fff;
+		 		position: fixed;
+		 		bottom: 0;
+		 		width: 100%;
+		 		padding: 1.25rem 0.75rem;
+		 		font-size: 0.65rem;
+		 		left: 0;
+		 	}
+		 	.sx-3 b{
+		 		font-size: 0.85rem;
+		 		color: #E2203F;
+		 		padding-right:0.5rem
+		 	}
+		 
+		 	.aui-btn{
+		 		border-radius: 2rem;
+		 		border:0.05rem solid #E2203F;
+		 		color: #E2203F;
+		 		font-size: 0.75rem;
+		 	}
+		</style>
+	</head>
+	<body>
+		 <div class="sx-1" style="margin-bottom: 0">
+		 	<div class="sx-1-1"></div>
+		 	<div class="sx-1-2">
+		 		<ul>
+		 			<li><span id="dian">●</span>阅读资讯<span id="time">0</span>秒，即可获得最高<b id="jinbi_jindu_2">0金币</b>奖励</li>
+		 			<li><span id="dian">●</span>请留言“我的 - 我的金币”，查看金币变化</li>
+		 			<li><span id="dian">●</span>金币支持提现、兑换商品，可提现到支付宝钱包</li>
+		 		</ul>
+		 	</div>
+		 	<div class="sx-1-3"><img src="../image/sx-1-3.png" /></div>
+		 </div>
+		 <div class="sx-2">
+		 	<div class="sx-2-1">
+		 		<img src="../image/sx-2-1.png" />
+		 	</div>
+		 	<div class="sx-2-2">
+		 		<script id="fx-list" type="text/x-dot-template">
+		 			{{? it.data.length}}
+					{{ for(var i=0,len=it.data.length; i < len; i++) { }}
+		 			<li class="aui-list-item">
+						<div class="aui-media-list-item-inner">
+							<div class="aui-list-item-inner">
+								<div class="aui-list-item-text asd1">
+									<div class="aui-list-item-title">阅读收益</div>
+									<div class="aui-list-item-right" style="color: #9B9B9B">{{= it.data[i].time }}</div>
+								</div>
+								<div class="aui-list-item-text asd2">
+									{{= it.data[i].content}}
+								</div>
+							</div>
+						</div>
+					</li>
+					{{ } }}
+					{{??}}
+					<div class="error"><img src="../image/sx-2-2.png" /><p>您今天还没阅读收益哦，快去阅读赚钱吧</p></div>
+					{{?}}
+					<div class="sx-3 aui-card-list-footer">
+						<div>今日阅读总收益：<b>{{= it.num_jinbi}}金币</b></div>
+						<div class="aui-btn  aui-btn-outlined aui-btn-sm" Tapmode onclick="_url({url:'yaoqing/shouru',title:'我的收入'},'',true)">查看钱包</div>
+					</div>
+				</script>
+		 		<ul class="aui-list aui-media-list" id="fx-view">
+		 		 
+		 			<div id="jiazai"><img src="../image/loading_more.gif" /></div>
+		 		</ul>
+		 	</div>
+		 </div>
+
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/doT.js"></script>
+	<script type="text/javascript" src="../script/ffxiang.js"></script>
+	<script>
+		apiready = function() {
+			if(_config.yaoqing.money_jindu_time){
+				$('#time').text(_config.yaoqing.money_jindu_time);
+			}else{
+				$('#time').text('30');
+			}
+			$('#jinbi_jindu_2').text(_config.yaoqing.jinbi_jindu_2);
+			data();
+		}
+		function data(){
+			_ajax('api/member/jindu_view',function(ret,err){
+				if(ret){
+				//	console.log(JSON.stringify(ret))
+					var evalData = doT.template($api.html($api.byId('fx-list')));
+					$api.html($api.byId('fx-view'), evalData(ret));
+					 
+				}else{
+				//	console.log(JSON.stringify(err))
+					$api.html($api.byId('fx-view'), '<div class="error"><img src="../image/sx-2-2.png" /><p>您今天还没阅读收益哦，快去阅读赚钱吧</p></div><div class="sx-3 aui-card-list-footer"><div>今日阅读总收益<b>0金币</b></div><div class="aui-btn  aui-btn-outlined aui-btn-sm" Tapmode onclick="_url({url:\'yaoqing/shouru\',title:\'我的收入\'},\'\',true)">查看钱包</div></div>');
+				}
+				api.parseTapmode();
+				$api.fixTabBar($api.dom('.sx-3'))
+			})
+		}
+	</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style>
+			html,body {
+				width: 100%;
+				height: 100%;
+				background: transparent !important;
+			}
+			.aui-list,
+			.aui-list  ul,
+			.aui-list  li
+			{
+				border: 0 !important; 
+				background: none !important;
+			}
+			.t {
+				z-index: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.f {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				background: #fff !important;
+				z-index: 9;
+				border-top-left-radius: 1rem;
+				border-top-right-radius: 1rem;
+			}
+ 			.aui-tab .aui-tab-item{
+ 				height: 2.5rem;
+ 				line-height: 2.5rem;
+ 			}
+ 			.aui-tab div{
+ 				-webkit-transition: all .3s;
+	      		transition: all .3s;
+ 				font-size: 0.75rem;
+ 			}
+ 			.aui-tab .aui-active{
+ 				font-size: 0.85rem;
+ 			}
+		</style>
+	</head>
+	<body>
+		<div class="t" tapmode onclick="c()"></div>
+		<div class="f">
+			<div class="aui-tab">
+		        <div class="aui-tab-item aui-active" id="tab_0" tapmode onclick="randomSwitchBtn(0)">今日榜单</div>
+		        <div class="aui-tab-item" id="tab_1" tapmode onclick="randomSwitchBtn(1)">本周榜单</div>
+		        <div class="aui-tab-item" id="tab_2" tapmode onclick="randomSwitchBtn(2)">历史总榜</div>
+		    </div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/ffxiang.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			$api.css($api.dom('.f'),'height:'+(api.winHeight/2)+'px');
+ 			var frames = [];
+			for (var i = 0; i < 3; i++) {
+				var frame = {};
+				frame.name = 'zhibo/view_frm_liwu_user_frame_' + i;
+				frame.url = html_win + 'zhibo/view_frm_liwu_user_frame.html';
+				frame.pageParam = {
+					type : i+1,
+					uid:api.pageParam['uid']
+				}
+				frames.push(frame);
+			}
+			openFrameGroup(frames)
+		}
+		function a() {
+		 
+		}
+		function openFrameGroup(frames) {
+			//console.info(JSON.stringify(frames))
+			var footerh = $api.offset($api.dom('.f')).t;
+			var h = $api.offset($api.dom('.aui-tab')).h;
+			footerh = footerh + h;
+			api.openFrameGroup({
+				name : 'zhibo/view_frm_liwu_user_frame',
+				bounces : true,
+				rect : {
+					x : 0,
+					y : footerh,
+					w : 'auto',
+					h : api.winHeight - footerh,
+				},
+				frames : frames,
+				index : 0,
+				preload : 0,	// 预加载的 frame 个数，默认加载当前页后面一个
+			}, function(ret, err) {
+		 		active(ret.index)
+			});
+		}
+		// 点击分类栏目时，设置 frame 组当前可见 frame
+		function randomSwitchBtn(index) {
+			active(index)
+			api.setFrameGroupIndex({
+				name : 'zhibo/view_frm_liwu_user_frame',
+				index : index,
+				scroll : true, //是否平滑滚动至目标窗口，即是否带有动画
+			});
+		}
+
+		// 点击样式
+		function active(index) {
+			$api.removeCls($api.dom(".aui-tab .aui-active"), 'aui-active');
+			$api.addCls($api.dom("#tab_"+index), 'aui-active');
+		}
+
+		function c() {
+			api.closeFrameGroup({name:'zhibo/view_frm_liwu_user_frame'});
+			api.closeFrame();
+		}
+
+		 
+	</script>
+</html>

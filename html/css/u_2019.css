@@ -1,0 +1,125 @@
+/*
+// +----------------------------------------------------------------------
+// | 南昌速翔网络科技有限公司 
+// +----------------------------------------------------------------------
+// | 新闻资讯APP系统 V1.0版
+// +----------------------------------------------------------------------
+// | QQ技术：1424445608   电话/微信：15622289461
+// +----------------------------------------------------------------------
+// | 请务必尊重知识产权 严格保证不恶意传播产品源码、不得直接对产品本身
+// | 进行二次转售或倒卖、不得对产品进行简单包装后声称为自己的产品等。
+// | 否则我们有权利收回产品，并根据事态轻重追究相应法律责任。
+// +----------------------------------------------------------------------
+// | Copyright (c) 2018-2019 http://www.suxiangw.com/ All rights reserved.
+// +----------------------------------------------------------------------
+*/
+body{
+	background: #F4F6F7 !important;
+}
+.sx-i-1 ul
+,.sx-i-1 li
+{
+	border: 0 !important;
+	background: none !important;
+}
+.sx-i-1{
+	overflow: hidden;
+	background: #fff;
+	padding-bottom: 0.75rem;
+	margin-bottom: 0.3rem;
+}
+.sx-i-1 .aui-list .aui-list-item-media img{
+	width: 100%;
+	height: auto;
+}
+.sx-i-1 .aui-list .aui-list-item{
+	padding-left: 0.75rem;
+}
+.sx-i-1 .aui-media-list .aui-list-item-inner{
+	padding-bottom: 0.5rem;
+}
+.sx-i-1 .aui-list .aui-list-item-media{
+	padding-right:0.4rem !important;
+	width: 4.5rem;
+	height: auto;
+	margin-right:auto !important;
+}
+.sx-i-1 .aui-card-list-footer div{
+	margin: 0 auto;
+}
+.sx-i-1 .aui-card-list-footer div div{
+	text-align: center;
+	margin: 0 auto;
+	color: #000;
+	font-weight: bold;
+	font-size: 0.85rem;
+}
+.sx-i-1 .aui-card-list-footer div p{
+	font-size: 0.6rem;
+}
+.sx-i-1 .aui-card-list-footer:last-child div{
+	border: 1px solid #e8e8e8;
+	width: 45%;
+	text-align: center;
+	color: #222;
+	border-radius: 0.25rem;
+	font-size: 0.75rem;
+	padding: 0.2rem 0
+}
+.sx-i-1 .aui-list .aui-list-item-text{
+	padding: 0;
+}
+.sx-i-2{
+	padding:0 0.75rem;
+}
+.sx-i-2 p{
+	font-size: 0.65rem;
+	margin-top: 0.25rem;
+	color: #222;
+}
+.sx-i-tab{
+	background: #fff;
+	padding: 0 !important;
+	min-height: 1.6rem;
+	line-height:1.6rem;
+	border-bottom: 1px solid #e8e8e8;
+}
+.sx-i-tab div.a{
+	text-align: center;
+	margin: 0 auto;
+	width: 20%; 
+	min-height: 1.6rem;
+	line-height:1.6rem;
+}
+.sx-i-tab div.a div{
+	display: inline-block;
+	min-height: 1.6rem;
+	line-height:1.6rem;
+	font-size: 0.75rem;
+	color: #000;
+}
+.sx-i-tab div.b div{ 
+	border-bottom: 0.15rem solid #F13B39;
+	font-weight: bold;
+}
+.sx-i-2 .weizhi{
+	background: url('../image/2019/bel.png') no-repeat left 0.1rem;
+	background-size:0.75rem;
+	padding-left: 1rem;
+}
+
+.sx-i-2 .qianming{
+	background: url('../image/2019/be4.png') no-repeat left 0.1rem;
+	background-size:0.75rem;
+	padding-left: 1rem;
+}
+.renzheng_a{
+	background: #F95859;
+	color: #fff !important;
+	border: 1px solid #F95859;
+}
+
+
+
+
+
